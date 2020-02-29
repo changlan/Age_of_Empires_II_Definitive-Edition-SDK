@@ -301,7 +301,7 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 	(WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)OriginalWndProcHandler);
 
 	FreeLibraryAndExitThread((HMODULE)hModule, 0);
-	
+
 	return NULL;
 }
 

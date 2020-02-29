@@ -6,7 +6,7 @@ class ESP : public Feature
 	bool gaiaEsp = false;
 	bool goldESP = false;
 	bool stoneESP = false;
-	bool playerUnitEsp[8] = { false,true,false,false,false,false,false,false };
+	bool playerUnitEsp[8] = { false,true,true,true,true,true,true,true };
 
 	bool playerUnitNameEsp[8] = { false,false,false,false,false,false,false,false };
 	//bool playerBuildingEsp[8] = { false,true,true,true,true,true,true,true };
