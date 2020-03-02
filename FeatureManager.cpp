@@ -22,6 +22,8 @@ FeatureManager* FeatureManager::Get()
 
 void FeatureManager::registerFeature(Feature* feature)
 {
+	static int feature_numer = 0;
+	printf("Registered feature %d\n", feature_numer);
 	features.push_back(feature);
 }
 

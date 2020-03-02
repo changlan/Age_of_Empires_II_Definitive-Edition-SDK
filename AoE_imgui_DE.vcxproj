@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Classes.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="DetourHook64.h" />
     <ClInclude Include="detours.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="ESP.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MinimapText.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceInformation.h" />
@@ -167,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="DetourHook64.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="Feature.cpp" />
@@ -177,6 +180,7 @@
     <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="MinimapText.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceInformation.cpp" />
     <ClCompile Include="Source.cpp" />

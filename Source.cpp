@@ -38,7 +38,7 @@ DWORD_PTR* pSwapChainVtable = NULL;
 
 VOID WINAPI OnDllAttach(PVOID base)
 {
-#ifdef DEBUG
+#ifdef _DEBUG
 	AllocConsole();
 	freopen_s((FILE**)stdin, "CONIN$", "r", stdin);
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
@@ -48,7 +48,7 @@ VOID WINAPI OnDllAttach(PVOID base)
 
 VOID WINAPI OnDllDetach()
 {
-#ifdef DEBUG
+#ifdef _DEBUG
 	fclose((FILE*)stdin);
 	fclose((FILE*)stdout);
 
@@ -283,7 +283,7 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 	DWORD dwOld;
 	VirtualProtect(phookD3D11Present, 2, PAGE_EXECUTE_READWRITE, &dwOld);
 
-	while (!(GetAsyncKeyState(VK_DELETE) & 0x8000)) {
+	while (!(GetAsyncKeyState(VK_F2) & 0x8000)) {
 		Sleep(10);
 	}
 

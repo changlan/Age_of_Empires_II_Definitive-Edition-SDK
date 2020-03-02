@@ -102,6 +102,12 @@
     <ClInclude Include="ESP.h">
       <Filter>Header Files\Feature</Filter>
     </ClInclude>
+    <ClInclude Include="MinimapText.h">
+      <Filter>Header Files\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourHook64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -145,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="ESP.cpp">
       <Filter>Source Files\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="MinimapText.cpp">
+      <Filter>Source Files\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourHook64.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

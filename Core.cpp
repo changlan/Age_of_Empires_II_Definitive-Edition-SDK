@@ -15,20 +15,23 @@
 //Features
 #include "ResourceInformation.h"
 #include "ESP.h"
-
+#include "MinimapText.h"
 
 Core::Core()
 {
 	//Register Features here
 	FeatureManager::Get()->registerFeature(new ResourceInformation());
 	FeatureManager::Get()->registerFeature(new ESP());
+	FeatureManager::Get()->registerFeature(new MinimapText());
 
 	FeatureManager::Get()->OnInitialise();
 }
 
 void createPlayerTreeNode(Player* player, int playerIndex)
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
+	ImGui::PushStyleColor(ImGuiCol_Text, Engine::Get()->GetPlayerColorImGUI(*player->playerColor));
+
+
 	std::string playerText = "Player " + std::to_string(playerIndex);
 	if (ImGui::TreeNode(playerText.c_str()))
 	{
@@ -83,6 +86,9 @@ void Core::OnPresent()
 		//printf("mainScreen: %p\n", mainScreen);
 		if (!mainScreen)
 		{
+			ImGui::Begin("AoE Hackbase - BDKPlayer", (bool*)0, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+			ImGui::Text("Waiting for game to start...");
+			ImGui::End();
 			return;
 		}
 
@@ -124,8 +130,9 @@ void Core::OnPresent()
 		}
 
 		printf("Iterating players\n");
-		for (int i = 1; i < totalPlayers; i++)
+		for (int i = 1; i <= totalPlayers; i++)
 		{
+			printf("PlayerIndex: %d\n", i);
 			Player* player = playerArray->playerData[i].player;
 			if (!player)
 			{
@@ -160,7 +167,7 @@ void Core::OnPresent()
 					ImGui::Text("PlayerArray %p", playerArray);
 					ImGui::Text("totalPlayers %d", totalPlayers);
 					ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
-					for (int i = 0; i < totalPlayers; i++)
+					for (int i = 0; i <= totalPlayers; i++)
 					{
 						createPlayerTreeNode(playerArray->playerData[i].player, i);
 					}

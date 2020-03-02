@@ -99,9 +99,9 @@ public:
 	char pad_0x0030[0x40]; //0x0030
 	Resources* pResources; //0x0070 
 	char pad_0x0078[0xD8]; //0x0078
-	int* Color1; //0x0150 
-	int* Color2; //0x0158 
-	int* Color3; //0x0160 
+	void* unk; //0x0150 
+	int* playerColor; //0x0158 
+	int* unk1; //0x0160 
 
 }; //Size=0x0188
 
@@ -217,8 +217,8 @@ class PlayerData
 {
 public:
 	Player* player; //0x0000
-	void* unk; //0x0004
-}; //Size: 0x0008
+	void* unk; //0x0008
+};
 
 class PlayerArray
 {
