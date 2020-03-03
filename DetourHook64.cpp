@@ -12,29 +12,20 @@ BYTE* DetourHook64::Hook(BYTE* hookAddress, BYTE* shellcode, int shellcodeSize, 
 	this->pageSize = pageSize;
 	this->originalBytes = new BYTE[length];
 
-
-	printf("MinimapText - Hook\n");
-
 	//Make original code writeable (.text segment usually read only). 
 	DWORD oldProtection;
 	if (!VirtualProtect(hookAddress, length, PAGE_EXECUTE_READWRITE, &oldProtection))
 	{
 		return NULL; //Couldn't make memory writeable
 	}
-	printf("MinimapText - VirtualProtect\n");
-
 
 	for (int i = 0; i < length; i++)
 	{
 		this->originalBytes[i] = hookAddress[i];
-		printf("Original Byte %i: %x\n", i, hookAddress[i]);
 	}
-
-
+	
 	//Create VirtualMemoryPage somewhere (NULL) lets system decide
 	trampoline = (BYTE*)VirtualAlloc(NULL, pageSize, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-
-	printf("MinimapText - trampoline\n");
 
 	if (!trampoline)
 	{

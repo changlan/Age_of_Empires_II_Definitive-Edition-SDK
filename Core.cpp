@@ -31,7 +31,6 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, Engine::Get()->GetPlayerColorImGUI(*player->playerColor));
 
-
 	std::string playerText = "Player " + std::to_string(playerIndex);
 	if (ImGui::TreeNode(playerText.c_str()))
 	{
@@ -77,6 +76,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 	ImGui::PopStyleColor();
 }
 
+
 void Core::OnPresent()
 {
 	printf("OnPresent\n");
@@ -86,9 +86,6 @@ void Core::OnPresent()
 		//printf("mainScreen: %p\n", mainScreen);
 		if (!mainScreen)
 		{
-			ImGui::Begin("AoE Hackbase - BDKPlayer", (bool*)0, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
-			ImGui::Text("Waiting for game to start...");
-			ImGui::End();
 			return;
 		}
 
