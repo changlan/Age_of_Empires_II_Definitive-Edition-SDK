@@ -53,7 +53,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 		{
 			return; //Dont display annoying flares that Bots use
 		}
-		DrawBox(unit, colors_hex[*player->playerColor], playerUnitNameEsp[playerIndex]);
+		DrawBox(unit, colors_hex[*player->color], playerUnitNameEsp[playerIndex]);
 	}
 }
 

@@ -98,12 +98,12 @@ public:
 	ObjectManager* pObjectManager; //0x0028 
 	char pad_0x0030[0x40]; //0x0030
 	Resources* pResources; //0x0070 
-	char pad_0x0078[0xD8]; //0x0078
-	void* unk; //0x0150 
-	int* playerColor; //0x0158 
-	int* unk1; //0x0160 
+	char pad_0x0078[0xE0]; //0x0078
+	int* color; //0x0158 
+	char pad_0x0160[0x9238]; //0x0160
+	char* name; //0x9398 
 
-}; //Size=0x0188
+}; //Size=0x93A0
 
 class World
 {

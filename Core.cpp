@@ -29,10 +29,10 @@ Core::Core()
 
 void createPlayerTreeNode(Player* player, int playerIndex)
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, Engine::Get()->GetPlayerColorImGUI(*player->playerColor));
+	ImGui::PushStyleColor(ImGuiCol_Text, Engine::Get()->GetPlayerColorImGUI(*player->color));
 
 	std::string playerText = "Player " + std::to_string(playerIndex);
-	if (ImGui::TreeNode(playerText.c_str()))
+	if (ImGui::TreeNode(player->name))
 	{
 		ImGui::Text("Player %p", player);
 		FeatureManager::Get()->OnMenuPlayerTreenode(player, playerIndex);
