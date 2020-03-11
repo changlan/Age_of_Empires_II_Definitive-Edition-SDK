@@ -13,5 +13,11 @@ namespace Offsets
 
 	//44 89 25 ? ? ? ? 2B
 	//41 8B 45 28 99
-	int32_t totalPlayers = 0x28900D4; //correct
+	int64_t totalPlayers = 0x28900D4; //correct
+
+	//48 8B 0D ? ? ? ? 48 85 C9 74 0C 45 
+	int64_t tribePanelInven = 0x29c5110;
+
+	//48 8B 83 ? ? ? ? 48 8B 48 70 F3 0F 10 
+	int64_t tribePanelInven_localPlayer = 0x208;
 }

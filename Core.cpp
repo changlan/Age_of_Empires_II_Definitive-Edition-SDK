@@ -79,18 +79,15 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 
 void Core::OnPresent()
 {
-	printf("OnPresent\n");
 	__try
 	{
 		MainScreen* mainScreen = Engine::Get()->GetMainScreen();
-		//printf("mainScreen: %p\n", mainScreen);
 		if (!mainScreen)
 		{
 			return;
 		}
 
 		World* world = Engine::Get()->GetWorld();
-		printf("world: %p\n", world);
 
 
 		PlayerArray* playerArray = world->pPlayerArray;
@@ -98,19 +95,13 @@ void Core::OnPresent()
 		{
 			return;
 		}
-		printf("playerArray: %p\n", playerArray);
 		int totalPlayers = Engine::Get()->GetTotalPlayers();
-
-		printf("totalPlayers: %d\n", totalPlayers);
-
 
 		static bool openOverlay = true;
 		if (GetAsyncKeyState(VK_INSERT) & 1) { openOverlay = !openOverlay; }
 
 		Renderer::Get()->BeginScene();
-		printf("BeginScene\n");
 		FeatureManager::Get()->OnDraw();
-		printf("OnDraw\n");
 		Player* gaiaPlayer = *(Player**)(playerArray);
 
 		if (gaiaPlayer)
@@ -126,19 +117,14 @@ void Core::OnPresent()
 			}
 		}
 
-		printf("Iterating players\n");
 		for (int i = 1; i <= totalPlayers; i++)
 		{
-			printf("PlayerIndex: %d\n", i);
 			Player* player = playerArray->playerData[i].player;
 			if (!player)
 			{
 				continue;
 			}
-			printf("Player: %p\n", player);
 			FeatureManager::Get()->OnPlayerIteration(player, i);
-			printf("ObjectManager: %p\n", player->pObjectManager);
-			printf("ObjectManagerCount: %d\n", player->pObjectManager->Count);
 			for (int j = 0; j < player->pObjectManager->Count; j++)
 			{
 				Unit* unit = player->pObjectManager->units[j];
@@ -161,6 +147,7 @@ void Core::OnPresent()
 				{
 					ImGui::Text("World %p", world);
 					ImGui::Text("Map %p tilesize %d", world->pMap, world->pMap->GetTileSize());
+					ImGui::Text("Localplayer %p", Engine::Get()->GetLocalPlayer());
 					ImGui::Text("PlayerArray %p", playerArray);
 					ImGui::Text("totalPlayers %d", totalPlayers);
 					ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);

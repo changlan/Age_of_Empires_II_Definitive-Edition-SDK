@@ -18,6 +18,15 @@
 char* name = "NewName";
 
 
+typedef int(__fastcall* printMinimap)(void* that, char* format, ...);
+printMinimap oPrintMinimap;
+
+int __fastcall  hookedWrapper(void* that, char* format, char* playername, int currentPoints, int maxPoints)
+{
+	printf("In da Hook\n");
+
+	return oPrintMinimap(that, format, playername, currentPoints, maxPoints); //call original call
+}
 
 void MinimapText::OnInitialise()
 {
@@ -34,6 +43,26 @@ void MinimapText::OnInitialise()
 	//printf("hookAddress: %p\n", hookAddress);
 	//minimapTextDetour = new DetourHook64();
 	//minimapTextDetour->Hook(hookAddress, shellcode, shellcodeSize, (uint64_t)(hookAddress + 23), 19);
+
+	BYTE* callAddress = (BYTE*)Utility::Scan("\xE8\x00\x00\x00\x00\x49\x8B\x9D\x00\x00\x00\x00\x33\xD2\x44", "x????xxx????xxx", (char*)0x7ff000000000, 0x800000000000 - 0x7ff000000000);
+	
+	BYTE* function = (BYTE*)Utility::Scan("\xFF\x15\x00\x00\x00\x00\x85\xC0\x0F\x48", "xx????xxxx", (char*)0x7ff000000000, 0x800000000000 - 0x7ff000000000);
+	
+	function = function - 0x4b;
+	printf("callAddress: %p\n", callAddress);
+	printf("function: %p\n", function);
+	printf("hookedWrapper: %p\n", hookedWrapper);
+
+
+	oPrintMinimap = (printMinimap)(function);
+
+	int32_t callRelativeOffset = (int64_t)hookedWrapper - (int64_t)callAddress - 5;
+
+
+	getchar();
+	//*(int32_t*)(callAddress + 1) = callRelativeOffset; //override original call
+
+	//TO CALL E8 ? ? ? ? 49 8B 9D ? ? ? ? 33 D2 44
 }
 
 void MinimapText::OnShutdown()

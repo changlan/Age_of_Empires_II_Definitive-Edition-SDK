@@ -163,3 +163,16 @@ Player* Engine::GetPlayerByName(char* playerName)
 	}
 	return NULL;
 }
+
+Player* Engine::GetLocalPlayer()
+{
+	uint64_t tribePanelInven = *reinterpret_cast<uint64_t*>(base + Offsets::tribePanelInven);
+	if (!tribePanelInven)
+	{
+		return NULL;
+	}
+	else
+	{
+		return *reinterpret_cast<Player**>(tribePanelInven + Offsets::tribePanelInven_localPlayer);
+	}
+}
