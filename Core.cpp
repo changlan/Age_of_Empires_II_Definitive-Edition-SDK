@@ -124,6 +124,10 @@ void Core::OnPresent()
 			{
 				continue;
 			}
+			if (skipLocalplayer && player == Engine::Get()->GetLocalPlayer()) 
+			{
+				continue;
+			}
 			FeatureManager::Get()->OnPlayerIteration(player, i);
 			for (int j = 0; j < player->pObjectManager->Count; j++)
 			{
@@ -153,9 +157,15 @@ void Core::OnPresent()
 					ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
 					for (int i = 0; i <= totalPlayers; i++)
 					{
-						createPlayerTreeNode(playerArray->playerData[i].player, i);
+						Player* currentPlayer = playerArray->playerData[i].player;
+						if (skipLocalplayer && currentPlayer == Engine::Get()->GetLocalPlayer())
+						{
+							continue;
+						}
+						createPlayerTreeNode(currentPlayer, i);
 					}
 					FeatureManager::Get()->OnMenuMainWindow();
+					ImGui::Checkbox("Skip localplayer", &skipLocalplayer);
 				}
 			}
 			__finally
