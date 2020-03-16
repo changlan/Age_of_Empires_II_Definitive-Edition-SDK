@@ -22,7 +22,7 @@ Core::Core()
 	//Register Features here
 	FeatureManager::Get()->registerFeature(new ResourceInformation());
 	FeatureManager::Get()->registerFeature(new ESP());
-	FeatureManager::Get()->registerFeature(new MinimapText());
+	//FeatureManager::Get()->registerFeature(new MinimapText());
 
 	FeatureManager::Get()->OnInitialise();
 }
@@ -34,6 +34,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 	std::string playerText = "Player " + std::to_string(playerIndex);
 	if (ImGui::TreeNode(player->name))
 	{
+		ImGui::PushStyleColor(ImGuiCol_Text, 0xffffffff);
 		ImGui::Text("Player %p", player);
 		FeatureManager::Get()->OnMenuPlayerTreenode(player, playerIndex);
 		if (ImGui::TreeNode("Units"))
@@ -71,6 +72,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 			ImGui::Text("Cavalry %.d", calavaryCount);
 			ImGui::TreePop();
 		}
+		ImGui::PopStyleColor();
 		ImGui::TreePop();
 	}
 	ImGui::PopStyleColor();
@@ -81,20 +83,26 @@ void Core::OnPresent()
 {
 	__try
 	{
+		printf("Valid: ");
 		MainScreen* mainScreen = Engine::Get()->GetMainScreen();
 		if (!mainScreen)
 		{
 			return;
 		}
-
+		printf("mainScreen %p", mainScreen);
 		World* world = Engine::Get()->GetWorld();
-
+		if (!world)
+		{
+			return;
+		}
+		printf(" world %p", world);
 
 		PlayerArray* playerArray = world->pPlayerArray;
 		if (!playerArray)
 		{
 			return;
 		}
+		printf(" playerArray %p", playerArray);
 		int totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		static bool openOverlay = true;
@@ -142,7 +150,7 @@ void Core::OnPresent()
 
 		Renderer::Get()->EndScene();
 
-		ImGui::SetNextWindowBgAlpha(0.35f);
+		ImGui::SetNextWindowBgAlpha(0.55f);
 		if (openOverlay)
 		{
 			__try

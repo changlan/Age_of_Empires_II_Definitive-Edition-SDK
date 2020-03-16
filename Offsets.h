@@ -20,4 +20,8 @@ namespace Offsets
 
 	//48 8B 83 ? ? ? ? 48 8B 48 70 F3 0F 10 
 	int64_t tribePanelInven_localPlayer = 0x208;
+
+
+	//Pattern
+	int64_t unit_actionlist = 0x278; //48 8B 8B ? ? ? ? E8 ? ? ? ? 48 85 FF
 }

@@ -71,6 +71,73 @@ class ObjectManager;
 class Player;
 
 
+enum class EnumUnitDataClass : int16_t //From Age of Empires 2013
+{
+	InvalidClass = -1,
+	Archer = 0,
+	Artifact = 1,
+	TradeBoat = 2,
+	Building = 3,
+	Civilian = 4,
+	OceanFish = 5,
+	Infantry = 6,
+	BerryBush = 7,
+	StoneMine = 8,
+	PreyAnimal = 9,
+	PredatorAnimal = 10,
+	Miscellaneous = 11,
+	Cavalry = 12,
+	SiegeWeapon = 13,
+	Terrain = 14,
+	Tree = 15,
+	TreeStump = 16,
+	Healer = 17,
+	Monk = 18,
+	TradeCart = 19,
+	TransportBoat = 20,
+	FishingBoat = 21,
+	Warship = 22,
+	Conquistador = 23,
+	WarElephant = 24,
+	Hero = 25,
+	ElephantArcher = 26,
+	Wall = 27,
+	Phalanx = 28,
+	DomesticAnimal = 29,
+	Flag = 30,
+	DeepSeaFish = 31,
+	GoldMine = 32,
+	ShoreFish = 33,
+	Cliff = 34,
+	Petard = 35,
+	CavalryArcher = 36,
+	Doppelganger = 37,
+	Bird = 38,
+	Gate = 39,
+	SalvagePile = 40,
+	ResourcePile = 41,
+	Relic = 42,
+	MonkWithRelic = 43,
+	HandCannoneer = 44,
+	TwoHandedSwordsman = 45,
+	Pikeman = 46,
+	Scout = 47,
+	OreMine = 48,
+	Farm = 49,
+	Spearman = 50,
+	PackedUnit = 51,
+	Tower = 52,
+	BoardingBoat = 53,
+	UnpackedSiegeUnit = 54,
+	Ballista = 55,
+	Raider = 56,
+	CavalryRaider = 57,
+	Livestock = 58,
+	King = 59,
+	MiscBuilding = 60,
+	ControlledAnimal = 61
+};
+
 class PathfindingSystem
 {
 public:
@@ -174,10 +241,13 @@ public:
 }; //Size=0x02CC
 
 
+
 class UnitData
 {
 public:
-	char pad_0x0000[0x48]; //0x0000
+	char pad_0x0000[0x20]; //0x0000
+	__int16 Class; //0x0020 
+	char pad_0x0022[0x26]; //0x0022
 	__int16 unk; //0x0048 
 	__int16 maxHp; //0x004A 
 	char pad_0x004C[0x8]; //0x004C
@@ -186,7 +256,6 @@ public:
 	float collisionZ; //0x005C 
 	char pad_0x0060[0x120]; //0x0060
 	char* name; //0x0180 
-
 }; //Size=0x0408
 
 
@@ -200,6 +269,18 @@ public:
 	float fHealth; //0x0090 
 	char pad_0x0094[0x4]; //0x0094
 	Vector3 position;
+
+	//When moving sadly height isnt set. When attack it works.
+	Vector3* GetTargetPosition()
+	{
+		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x278);
+		if (!actionList){return NULL;}
+		uint64_t targetDataWrapper = *reinterpret_cast<uint64_t*>(actionList + 0x10);
+		if (!targetDataWrapper) { return NULL; }
+		uint64_t actionMoveTo = *reinterpret_cast<uint64_t*>(targetDataWrapper);
+		if (!actionMoveTo) { return NULL; }
+		return reinterpret_cast<Vector3*>(actionMoveTo + 0x38);
+	}
 
 }; //Size=0x0250
 
