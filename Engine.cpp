@@ -155,11 +155,10 @@ Player* Engine::GetPlayerByName(char* playerName)
 		{
 			continue;
 		}
-		//TODO fix
-		/*if (strcmp(playerName, player->name) == 0)
+		if (strcmp(playerName, player->name) == 0)
 		{
 			return player;
-		}*/
+		}
 	}
 	return NULL;
 }

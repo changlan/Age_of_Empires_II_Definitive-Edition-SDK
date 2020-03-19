@@ -94,7 +94,17 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 				if (destination)
 				{
 					Vector2 screenDestinationPos = Engine::Get()->worldToScreen(*destination);
-					Renderer::Get()->RenderCircleFilled(ImVec2(screenDestinationPos.x, screenDestinationPos.y), 10, colors_hex[*player->color] & 0x77ffffff);
+					Renderer::Get()->RenderCircleFilled(ImVec2(screenDestinationPos.x, screenDestinationPos.y), 10, colors_hex[*player->pColor] & 0x77ffffff);
+				}
+			}
+
+			if (std::string(unit->pUnitData->name).find("Projectile Trebuchet") != std::string::npos)
+			{
+				Vector3* destination = unit->GetTargetPosition();
+				if (destination)
+				{
+					Vector2 screenDestinationPos = Engine::Get()->worldToScreen(*destination);
+					Renderer::Get()->RenderCircleFilled(ImVec2(screenDestinationPos.x, screenDestinationPos.y), 30, colors_hex[*player->pColor] & 0x77ffffff);
 				}
 			}
 		}
@@ -104,7 +114,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			return;
 		}
 
-		DrawBox(unit, colors_hex[*player->color], playerUnitNameEsp[playerIndex]);
+		DrawBox(unit, colors_hex[*player->pColor], playerUnitNameEsp[playerIndex]);
 
 		if (playerUnitDestinationEsp[playerIndex])
 		{
@@ -113,7 +123,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 
 			Vector2 screenPos = Engine::Get()->worldToScreen(unit);
 			Vector2 screenTargetPos = Engine::Get()->worldToScreen(*targetPosition);
-			Renderer::Get()->RenderLine(ImVec2(screenPos.x, screenPos.y), ImVec2(screenTargetPos.x, screenTargetPos.y), colors_hex[*player->color]);
+			Renderer::Get()->RenderLine(ImVec2(screenPos.x, screenPos.y), ImVec2(screenTargetPos.x, screenTargetPos.y), colors_hex[*player->pColor]);
 		}
 	}
 }
@@ -212,7 +222,10 @@ void ESP::OnNeutralUnit(Unit* unit)
 
 void ESP::OnMenuMainWindow()
 {
+	ImGui::Separator();
+	ImGui::Text("Resource ESP");
 	ImGui::Checkbox("GaiaESP", &gaiaEsp);
 	ImGui::Checkbox("GoldESP", &goldESP);
 	ImGui::Checkbox("StoneESP", &stoneESP);
+	ImGui::Separator();
 }

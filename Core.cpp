@@ -16,6 +16,7 @@
 #include "ResourceInformation.h"
 #include "ESP.h"
 #include "MinimapText.h"
+#include "RelicManager.h"
 
 Core::Core()
 {
@@ -23,19 +24,24 @@ Core::Core()
 	FeatureManager::Get()->registerFeature(new ResourceInformation());
 	FeatureManager::Get()->registerFeature(new ESP());
 	//FeatureManager::Get()->registerFeature(new MinimapText());
-
+	FeatureManager::Get()->registerFeature(new RelicManager());
 	FeatureManager::Get()->OnInitialise();
 }
 
 void createPlayerTreeNode(Player* player, int playerIndex)
 {
-	ImGui::PushStyleColor(ImGuiCol_Text, Engine::Get()->GetPlayerColorImGUI(*player->color));
+	ImGui::PushStyleColor(ImGuiCol_Text, Engine::Get()->GetPlayerColorImGUI(*player->pColor));
 
 	std::string playerText = "Player " + std::to_string(playerIndex);
 	if (ImGui::TreeNode(player->name))
 	{
 		ImGui::PushStyleColor(ImGuiCol_Text, 0xffffffff);
-		ImGui::Text("Player %p", player);
+		ImGui::Text("Player %p (%f, %f)", player, player->xScreenPos, player->yScreenPos);
+		if (ImGui::Button("Set camera to 0"))
+		{
+			player->xScreenPos = 0;
+			player->yScreenPos = 0;
+		}
 		FeatureManager::Get()->OnMenuPlayerTreenode(player, playerIndex);
 		if (ImGui::TreeNode("Units"))
 		{
@@ -150,7 +156,7 @@ void Core::OnPresent()
 
 		Renderer::Get()->EndScene();
 
-		ImGui::SetNextWindowBgAlpha(0.55f);
+		ImGui::SetNextWindowBgAlpha(0.8f);
 		if (openOverlay)
 		{
 			__try
@@ -163,6 +169,8 @@ void Core::OnPresent()
 					ImGui::Text("PlayerArray %p", playerArray);
 					ImGui::Text("totalPlayers %d", totalPlayers);
 					ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
+					ImGui::Separator();
+					ImGui::Text("Player Information");
 					for (int i = 0; i <= totalPlayers; i++)
 					{
 						Player* currentPlayer = playerArray->playerData[i].player;
@@ -173,6 +181,7 @@ void Core::OnPresent()
 						createPlayerTreeNode(currentPlayer, i);
 					}
 					FeatureManager::Get()->OnMenuMainWindow();
+					ImGui::Separator();
 					ImGui::Checkbox("Skip localplayer", &skipLocalplayer);
 				}
 			}

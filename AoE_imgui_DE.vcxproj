@@ -161,6 +161,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MinimapText.h" />
     <ClInclude Include="Offsets.h" />
+    <ClInclude Include="RelicManager.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceInformation.h" />
     <ClInclude Include="Resources.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="MinimapText.cpp" />
+    <ClCompile Include="RelicManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceInformation.cpp" />
     <ClCompile Include="Source.cpp" />

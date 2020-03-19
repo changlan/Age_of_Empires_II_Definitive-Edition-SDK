@@ -210,9 +210,9 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 	do
 	{
 		hDXGIDLL = GetModuleHandleA("dxgi.dll");
-		Sleep(4000);
+		Sleep(100);
 	} while (!hDXGIDLL);
-	Sleep(100);
+	//Sleep(100);
 
 	IDXGISwapChain* pSwapChain;
 

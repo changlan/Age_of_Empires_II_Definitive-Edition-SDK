@@ -108,6 +108,9 @@
     <ClInclude Include="DetourHook64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RelicManager.h">
+      <Filter>Header Files\Feature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="DetourHook64.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RelicManager.cpp">
+      <Filter>Source Files\Feature</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

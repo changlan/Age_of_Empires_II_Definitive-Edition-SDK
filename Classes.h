@@ -166,9 +166,24 @@ public:
 	char pad_0x0030[0x40]; //0x0030
 	Resources* pResources; //0x0070 
 	char pad_0x0078[0xE0]; //0x0078
-	int* color; //0x0158 
-	char pad_0x0160[0x9238]; //0x0160
+	int* pColor; //0x0158 
+	char pad_0x0160[0x18]; //0x0160
+	float xScreenPos; //0x0178 
+	float yScreenPos; //0x017C 
+	char pad_0x0180[0x9218]; //0x0180
 	char* name; //0x9398 
+
+	void SetCameraPosition(Vector2 pos)
+	{
+		xScreenPos = pos.x;
+		yScreenPos = pos.y;
+	}
+
+	void SetCameraPosition(Vector3 pos)
+	{
+		xScreenPos = pos.x;
+		yScreenPos = pos.y;
+	}
 
 }; //Size=0x93A0
 
@@ -281,6 +296,8 @@ public:
 		if (!actionMoveTo) { return NULL; }
 		return reinterpret_cast<Vector3*>(actionMoveTo + 0x38);
 	}
+
+	
 
 }; //Size=0x0250
 
