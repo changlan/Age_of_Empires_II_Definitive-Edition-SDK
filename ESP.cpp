@@ -4,6 +4,8 @@
 #include "Renderer.h"
 #include "Engine.h"
 
+#include <math.h>
+
 uint32_t ESP::colors_hex[8] = { 0xff0000ff, 0xffff0000,0xff00ff00,0xffffff00,0xff00ffff,0xffff00ff,0xffffffff,0xffffb400 };
 
 void ESP::DrawBox(Unit* unit, int32_t color, bool drawName = false)
@@ -76,6 +78,36 @@ void ESP::DrawBox(Vector3 position, Vector2 edgeSize, int32_t color)
 	Renderer::Get()->RenderRect(ivOne, ivFour, ivTwo, ivThree, color);
 }
 
+void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, int thickness = 1, bool drawName = false)
+{
+	static const float PI = 3.14159265358979323846;
+	int32_t tileSize = Engine::Get()->GetWorld()->pMap->GetTileSize();
+	Vector3 center = unit->position;
+
+	std::vector<ImVec2> screeenPoints;
+
+	float angle = 0;
+	for (int i = 0; i < smoothness; i++)
+	{
+		angle += (2 * PI) / smoothness;
+		float x = (float)(radius * cos(angle) + center.x);
+		float y = (float)(radius * sin(angle) + center.y);
+		Vector2 screenPos = Engine::Get()->worldToScreen(Vector3(x, y, center.z));
+		screeenPoints.push_back(ImVec2(screenPos.x, screenPos.y));
+	}
+	for (int i = 1; i < screeenPoints.size(); i++)
+	{
+		Renderer::Get()->RenderLine(screeenPoints[i], screeenPoints[i - 1], color, thickness);
+	}
+	Renderer::Get()->RenderLine(screeenPoints[0], screeenPoints[screeenPoints.size()-1], color, thickness);
+	if (drawName)
+	{
+		Vector2 screenTextPos = Engine::Get()->worldToScreen(center);
+		ImVec2 ivTextPos = ImVec2(screenTextPos.x, screenTextPos.y);
+		Renderer::Get()->RenderText(unit->pUnitData->name, ivTextPos, 16, color, false);
+	}
+}
+
 void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 {
 
@@ -86,7 +118,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			return; //Dont display annoying flares that Bots use
 		}
 
-		if (playerSiegeImpactLocation[playerIndex])
+		if (siegeImpactLocation)
 		{
 			if (std::string(unit->pUnitData->name).find("Projectile Mangonel") != std::string::npos)
 			{
@@ -116,6 +148,11 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 
 		DrawBox(unit, colors_hex[*player->pColor], playerUnitNameEsp[playerIndex]);
 
+		if (trebuchetESP && (std::string(unit->pUnitData->name).find("TREBU") != std::string::npos || std::string(unit->pUnitData->name).find("PTREB") != std::string::npos))
+		{
+			DrawCircle(unit, 16, colors_hex[*player->pColor], 100, 2, true);
+		}
+
 		if (playerUnitDestinationEsp[playerIndex])
 		{
 			Vector3* targetPosition = unit->GetTargetPosition();
@@ -136,7 +173,6 @@ void ESP::OnMenuPlayerTreenode(Player* player, int playerIndex)
 		ImGui::PushItemWidth(100);
 		ImGui::Checkbox("Unit", &playerUnitEsp[playerIndex]);
 		ImGui::Checkbox("Unit Destination", &playerUnitDestinationEsp[playerIndex]);
-		ImGui::Checkbox("Siege Impact", &playerSiegeImpactLocation[playerIndex]);
 		ImGui::TreePop();
 	}
 }
@@ -222,6 +258,9 @@ void ESP::OnNeutralUnit(Unit* unit)
 
 void ESP::OnMenuMainWindow()
 {
+	ImGui::Separator();
+	ImGui::Checkbox("Siege Impact ESP", &siegeImpactLocation);
+	ImGui::Checkbox("Trebuchet range ESP", &trebuchetESP);
 	ImGui::Separator();
 	ImGui::Text("Resource ESP");
 	ImGui::Checkbox("GaiaESP", &gaiaEsp);

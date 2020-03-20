@@ -315,7 +315,7 @@ BOOL __stdcall DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 		break;
 
 	case DLL_PROCESS_DETACH:
-		Sleep(1000);
+		//Sleep(1000);
 		OnDllDetach();
 		break;
 	}

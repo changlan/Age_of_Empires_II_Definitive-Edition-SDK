@@ -127,7 +127,6 @@ ImVec4 Engine::GetPlayerColorImGUI(int colorIndex)
 
 Player* Engine::GetPlayerByName(char* playerName)
 {
-	printf("GetPlayerByName: not implemented\n");
 	MainScreen* mainScreen = GetMainScreen();
 	if (!mainScreen)
 	{
