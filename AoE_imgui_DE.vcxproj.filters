@@ -96,9 +96,6 @@
     <ClInclude Include="Classes.h">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Header Files\SDK</Filter>
-    </ClInclude>
     <ClInclude Include="ESP.h">
       <Filter>Header Files\Feature</Filter>
     </ClInclude>
@@ -109,6 +106,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RelicManager.h">
+      <Filter>Header Files\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="MidfunctionHook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Patcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomLoadingScreen.h">
       <Filter>Header Files\Feature</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,6 +168,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RelicManager.cpp">
+      <Filter>Source Files\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="MidfunctionHook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Offsets.cpp">
+      <Filter>Source Files\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="Patcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomLoadingScreen.cpp">
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
   </ItemGroup>

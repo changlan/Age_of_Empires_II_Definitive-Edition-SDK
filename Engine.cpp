@@ -25,7 +25,7 @@ Engine* Engine::Get()
 World* Engine::GetWorld()
 {
 	PathfindingSystem* pathfindingSystem = reinterpret_cast<PathfindingSystem*>(base + Offsets::pathfindingSystem);
-	printf("pathfindingSystem: %p\n", pathfindingSystem);
+	//printf("pathfindingSystem: %p\n", pathfindingSystem);
 	if (!pathfindingSystem)
 	{
 		return NULL;
@@ -147,7 +147,7 @@ Player* Engine::GetPlayerByName(char* playerName)
 	int totalPlayers = GetTotalPlayers();
 
 
-	for (int i = 0; i < totalPlayers; i++)
+	for (int i = 0; i <= totalPlayers; i++)
 	{
 		Player* player = playerArray->playerData[i].player;
 		if (!player)

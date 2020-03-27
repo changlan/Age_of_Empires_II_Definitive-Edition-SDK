@@ -8,6 +8,7 @@
 
 void ResourceInformation::OnMenuPlayerTreenode(Player* player, int playerIndex)
 {
+	ImGui::Text("Resources: %p", player->pResources);
 	ImGui::Text("Wood: %.f", player->pResources->wood);
 	ImGui::Text("Food: %.f", player->pResources->food);
 	ImGui::Text("Gold: %.f", player->pResources->gold);

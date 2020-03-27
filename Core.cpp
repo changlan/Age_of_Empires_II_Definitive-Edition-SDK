@@ -17,14 +17,18 @@
 #include "ESP.h"
 #include "MinimapText.h"
 #include "RelicManager.h"
+#include "CustomLoadingScreen.h"
 
 Core::Core()
 {
+	FeatureManager* featureManager = FeatureManager::Get();
 	//Register Features here
-	FeatureManager::Get()->registerFeature(new ResourceInformation());
-	FeatureManager::Get()->registerFeature(new ESP());
-	//FeatureManager::Get()->registerFeature(new MinimapText());
-	FeatureManager::Get()->registerFeature(new RelicManager());
+	featureManager->registerFeature(new ResourceInformation());
+	featureManager->registerFeature(new ESP());
+	featureManager->registerFeature(new MinimapText());
+	featureManager->registerFeature(new RelicManager());
+	featureManager->registerFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
+
 	FeatureManager::Get()->OnInitialise();
 }
 
@@ -37,11 +41,6 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 	{
 		ImGui::PushStyleColor(ImGuiCol_Text, 0xffffffff);
 		ImGui::Text("Player %p (%f, %f)", player, player->xScreenPos, player->yScreenPos);
-		if (ImGui::Button("Set camera to 0"))
-		{
-			player->xScreenPos = 0;
-			player->yScreenPos = 0;
-		}
 		FeatureManager::Get()->OnMenuPlayerTreenode(player, playerIndex);
 		if (ImGui::TreeNode("Units"))
 		{
@@ -89,26 +88,26 @@ void Core::OnPresent()
 {
 	__try
 	{
-		printf("Valid: ");
+		//printf("Valid: ");
 		MainScreen* mainScreen = Engine::Get()->GetMainScreen();
 		if (!mainScreen)
 		{
 			return;
 		}
-		printf("mainScreen %p", mainScreen);
+		//printf("mainScreen %p", mainScreen);
 		World* world = Engine::Get()->GetWorld();
 		if (!world)
 		{
 			return;
 		}
-		printf(" world %p", world);
+		//printf(" world %p", world);
 
 		PlayerArray* playerArray = world->pPlayerArray;
 		if (!playerArray)
 		{
 			return;
 		}
-		printf(" playerArray %p", playerArray);
+		//printf(" playerArray %p", playerArray);
 		int totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		static bool openOverlay = true;

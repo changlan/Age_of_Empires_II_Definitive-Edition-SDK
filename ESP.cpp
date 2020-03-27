@@ -146,6 +146,12 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			return;
 		}
 
+		if (strcmp(unit->pUnitData->name, "CSTL") == 0)
+		{
+			DrawBox(unit, colors_hex[*player->pColor], true);
+			return;
+		}
+
 		DrawBox(unit, colors_hex[*player->pColor], playerUnitNameEsp[playerIndex]);
 
 		if (trebuchetESP && (std::string(unit->pUnitData->name).find("TREBU") != std::string::npos || std::string(unit->pUnitData->name).find("PTREB") != std::string::npos))
@@ -259,12 +265,15 @@ void ESP::OnNeutralUnit(Unit* unit)
 void ESP::OnMenuMainWindow()
 {
 	ImGui::Separator();
-	ImGui::Checkbox("Siege Impact ESP", &siegeImpactLocation);
-	ImGui::Checkbox("Trebuchet range ESP", &trebuchetESP);
+	ImGui::Text("Siege ESP");
+	ImGui::Checkbox("Siege Impact", &siegeImpactLocation);
+	ImGui::Checkbox("Trebuchet range", &trebuchetESP);
 	ImGui::Separator();
 	ImGui::Text("Resource ESP");
-	ImGui::Checkbox("GaiaESP", &gaiaEsp);
-	ImGui::Checkbox("GoldESP", &goldESP);
-	ImGui::Checkbox("StoneESP", &stoneESP);
+	ImGui::Checkbox("Gaia##ESP", &gaiaEsp);
+	ImGui::SameLine();
+	ImGui::Checkbox("Gold##ESP", &goldESP);
+	ImGui::SameLine();
+	ImGui::Checkbox("Stone##ESP", &stoneESP);
 	ImGui::Separator();
 }

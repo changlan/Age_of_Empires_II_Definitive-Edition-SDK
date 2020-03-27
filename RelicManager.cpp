@@ -37,9 +37,9 @@ void RelicManager::OnMenuMainWindow()
 			currentRelic = (currentRelic - 1) % relics.size();
 			Engine::Get()->GetLocalPlayer()->SetCameraPosition(relics[currentRelic]->position);
 		}
-		ImGui::SameLine(24);
+		ImGui::SameLine();
 		ImGui::Text("%d/%d", currentRelic + 1, relics.size());
-		ImGui::SameLine(48);
+		ImGui::SameLine();
 		if (ImGui::Button(">"))
 		{
 			currentRelic = (currentRelic + 1) % relics.size();

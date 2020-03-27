@@ -155,8 +155,14 @@ public:
 	float stone; //0x0008 
 	float gold; //0x000C 
 	float popSpaceLeft; //0x0010 
+	char pad_0x0014[0x4]; //0x0014
+	float age; //0x0018 
+	char pad_0x001C[0x10]; //0x001C
+	float currentPop; //0x002C 
+	char pad_0x0030[0x64]; //0x0030
+	float villagerCount; //0x0094 
 
-}; //Size=0x00C8
+}; //Size=0x0098
 
 class Player
 {
