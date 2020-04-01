@@ -10,18 +10,9 @@
 #include "imgui\imgui_impl_win32.h"
 #include "imgui\imgui_impl_dx11.h"
 
-#include "detours.h"
-#if defined _M_X64
-#pragma comment(lib, "detours.X64/detours.lib")
-#elif defined _M_IX86
-#pragma comment(lib, "detours.X86/detours.lib")
-#endif
-
-#pragma warning( disable : 4244 )
-
 #include "Core.h"
 #include "FeatureManager.h"
-
+#include "VmtHook.h"
 
 typedef HRESULT(__stdcall *D3D11PresentHook) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 
@@ -275,10 +266,9 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 
 	phookD3D11Present = (D3D11PresentHook)(DWORD_PTR*)pSwapChainVtable[8];
 
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourAttach(&(LPVOID&)phookD3D11Present, (PBYTE)hookD3D11Present);
-	DetourTransactionCommit();
+	VmtHook presentHook = VmtHook((void**)pSwapChainVtable);
+	presentHook.Hook(8, hookD3D11Present);
+
 
 	DWORD dwOld;
 	VirtualProtect(phookD3D11Present, 2, PAGE_EXECUTE_READWRITE, &dwOld);
@@ -293,10 +283,7 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 
 	FeatureManager::Get()->OnShutdown();
 
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourDetach(&(LPVOID&)phookD3D11Present, (PBYTE)hookD3D11Present);
-	DetourTransactionCommit();
+	presentHook.Unhook();
 
 	(WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)OriginalWndProcHandler);
 

@@ -9,7 +9,6 @@
 #include "Utility.h"
 #include "Offsets.h"
 
-#include "DetourHook64.h"
 #include "MidfunctionHook.h"
 #include "Patcher.h"
 

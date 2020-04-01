@@ -63,9 +63,6 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="detours.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
     <ClInclude Include="MinimapText.h">
       <Filter>Header Files\Feature</Filter>
     </ClInclude>
-    <ClInclude Include="DetourHook64.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RelicManager.h">
       <Filter>Header Files\Feature</Filter>
     </ClInclude>
@@ -116,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="CustomLoadingScreen.h">
       <Filter>Header Files\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="VmtHook.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +161,6 @@
     <ClCompile Include="MinimapText.cpp">
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
-    <ClCompile Include="DetourHook64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RelicManager.cpp">
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
@@ -181,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="CustomLoadingScreen.cpp">
       <Filter>Source Files\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="VmtHook.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
