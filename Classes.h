@@ -303,7 +303,13 @@ public:
 		return reinterpret_cast<Vector3*>(actionMoveTo + 0x38);
 	}
 
-	
+
+	typedef char(__fastcall* fhsMoveToCaller)(Unit* unit, Unit* targetUnit, World* world, int64_t zero, float xPos, float yPos, int zero2);
+	void MoveTo(World* world, float xPos, float yPos)
+	{
+		static fhsMoveToCaller moveUnitCaller = (fhsMoveToCaller)((int64_t)GetModuleHandle(NULL) + 0xc863a0);
+		moveUnitCaller(this, 0, world, 0, xPos, yPos, 0);
+	}
 
 }; //Size=0x0250
 

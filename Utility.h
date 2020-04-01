@@ -62,4 +62,19 @@ public:
         return Scan(pattern, mask, 0x0, (uintptr_t)kernelMemory);
     }
 
+    static void CopyToClipboard(uint64_t addy)
+    {
+        char szBuffer[2048];
+        sprintf(szBuffer, "0x%llx", addy);
+        const char* output = szBuffer;
+        const size_t len = strlen(output) + 1;
+        HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+        memcpy(GlobalLock(hMem), output, len);
+        GlobalUnlock(hMem);
+        OpenClipboard(0);
+        EmptyClipboard();
+        SetClipboardData(CF_TEXT, hMem);
+        CloseClipboard();
+    }
+
 };

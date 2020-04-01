@@ -11,6 +11,7 @@
 #include "Core.h"
 #include "Engine.h"
 #include "FeatureManager.h"
+#include "Utility.h"
 
 //Features
 #include "ResourceInformation.h"
@@ -57,6 +58,17 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 					ImGui::Text("%p", unit);
 					ImGui::SameLine();
 					ImGui::Text("%s", unit->pUnitData->name);
+					ImGui::SameLine();
+					std::string text = std::string("Copy##") + std::string(unit->pUnitData->name) + std::to_string(i);
+					/*if (ImGui::Button(text.c_str()))
+					{
+						unit->MoveTo(Engine::Get()->GetWorld(), 50.f, 50.f);
+					}*/
+
+					if (ImGui::Button(text.c_str()))
+					{
+						Utility::CopyToClipboard((uint64_t)unit);
+					}
 
 			/*		if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Building)
 					{
@@ -122,7 +134,7 @@ void Core::OnPresent()
 			for (int i = 0; i < gaiaPlayer->pObjectManager->Count; i++)
 			{
 				Unit* unit = gaiaPlayer->pObjectManager->units[i];
-				if (!unit)
+				if (!unit || unit->pUnitData->Class == -1)
 				{
 					continue;
 				}
@@ -145,7 +157,7 @@ void Core::OnPresent()
 			for (int j = 0; j < player->pObjectManager->Count; j++)
 			{
 				Unit* unit = player->pObjectManager->units[j];
-				if (!unit)
+				if (!unit || unit->pUnitData->Class == -1)
 				{
 					continue;
 				}

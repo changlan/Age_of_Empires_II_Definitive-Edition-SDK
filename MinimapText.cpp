@@ -26,7 +26,7 @@ bool displayStone = false;
 bool displayPopulation = false;
 
 
-void __fastcall minimapProxy(registers* registers)
+void __fastcall minimapProxy(Registers* registers)
 {
 	if (!*hookEnabled)
 	{
@@ -48,7 +48,7 @@ void __fastcall minimapProxy(registers* registers)
 		return;
 	}
 
-	std::string woodString = std::to_string((int)player->pResources->wood);
+	std::string woodString = std::to_string((player->pResources->wood));
 	std::string foodString = std::to_string((int)player->pResources->food);
 	std::string goldString = std::to_string((int)player->pResources->gold);
 	std::string stoneString = std::to_string((int)player->pResources->stone);
@@ -75,7 +75,7 @@ void __fastcall minimapProxy(registers* registers)
 	{
 		newName += " Pop: " + populationString;
 	}
-	strcpy((char*)registers->rdi, newName.c_str());
+	MidfunctionHook::OverwriteRegister(registers->rsp, Register::RDI, (int64_t)newName.c_str());
 }
 
 void MinimapText::OnInitialise()
@@ -88,13 +88,13 @@ void MinimapText::OnInitialise()
 
 	//74 7F 48 8D 4B 01 48 85 C9 74 59   + 14
 	//Patch usage of short string optimizaation (playernames <= 15)
-	patcher.NOPBytes((BYTE*)(base + 0xA426EE), 6);
+	//patcher.NOPBytes((BYTE*)(base + 0xA426EE), 6);
 
 	//74 7F 48 8D 4B 01 48 85 C9 74 59   + 18
 	//Increase space allocated for playernames to 0x120 bytes so we can write as much as we want to on screen
-	Patcher().Patch((BYTE*)(base + 0xA426F5), (int32_t)0x120);
+	//Patcher().Patch((BYTE*)(base + 0xA426F5), (int32_t)0x120);
 
-	minimapHook.Hook((BYTE*)(int64_t)GetModuleHandle(NULL) + Offsets::minimapHookOffset, (BYTE*)minimapProxy, 17);
+	minimapHook.Hook((BYTE*)(int64_t)GetModuleHandle(NULL) + Offsets::minimapHookOffset, (BYTE*)minimapProxy, 14);
 }
 
 void MinimapText::OnShutdown()

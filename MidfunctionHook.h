@@ -5,9 +5,28 @@
 #include <iostream>
 #include <xmmintrin.h>
 
-
-struct registers
+enum class Register
 {
+	RAX,
+	RCX,
+	RDX,
+	RBX,
+	RBP,
+	RSI,
+	RDI,
+	R8,
+	R9,
+	R10,
+	R11,
+	R12,
+	R13,
+	R14,
+	R15
+};
+
+struct Registers
+{
+	int64_t rsp;
 	int64_t rax;
 	int64_t rcx;
 	int64_t rdx;
@@ -43,7 +62,8 @@ struct registers
 
 	void print()
 	{
-		printf("rax = %llx\nrcx = %llx\nrdx = %llx\nrbx = %llx\nrbp = %llx\nrsi = %llx\nrdi = %llx\nr8 = %llx\nr9 = %llx\nr10 = %llx\nr11 = %llx\nr12 = %llx\nr13 = %llx\nr14 = %llx\nr15 = %llx\n",
+		printf("rsp = %llx\nrax = %llx\nrcx = %llx\nrdx = %llx\nrbx = %llx\nrbp = %llx\nrsi = %llx\nrdi = %llx\nr8 = %llx\nr9 = %llx\nr10 = %llx\nr11 = %llx\nr12 = %llx\nr13 = %llx\nr14 = %llx\nr15 = %llx\n",
+			rsp,
 			rax,
 			rcx,
 			rdx,
@@ -78,6 +98,7 @@ class MidfunctionHook
 	int hookLength;
 
 public:
+	static void OverwriteRegister(int64_t rsp, Register reg, int64_t value);
 	void Hook(BYTE* sourceAddress, BYTE* targetAddress, const int length);
 	void Unhook();
 };

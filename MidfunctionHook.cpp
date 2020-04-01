@@ -4,6 +4,15 @@
 
 
 //
+//Overwrites the VALUE of a register. To be used inside a proxy function.
+//This function is required because changes like: registers->rdi = 0xdeadbeef will get restored by the trampoline (pop rdi)
+//To change the value pointed to by a register just dereference it instead: *(int64*)registers->rdi = 0x4711 (usage of this function not required)
+void MidfunctionHook::OverwriteRegister(int64_t rsp, Register reg, int64_t value)
+{
+	*((int64_t*)rsp + (int)reg) = value;
+}
+
+//
 //Hooks a function anywhere by placing jumping to a trampoline. The trampoline saves all registers and then calls the proxy function
 //0xff, 0x25, 0x0, 0x0, 0x0, 0x0					JMP[rip + 0]
 //0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88	absolute address of jump
@@ -11,13 +20,13 @@
 //Important: the overwritten bytes are NOT relocated meaning only position independet instructions can be overwritten
 //
 //TODO: 
-//When hooking within prologe or epicloge of a function the stack by not be aligned 
+//When hooking within prologe or epicloge of a function the stack may not be aligned 
 //use BTR RSP, 3 to align stack and save RSP to then later restore it
 void MidfunctionHook::Hook(BYTE* sourceAddress, BYTE* targetAddress, const int hookLength)
 {
-	const int stubLength = 375;
+	const int stubLength = 380;
 	const int stubJumpBackLength = 14;
-	const int proxyFunctionAddressIndex = 185;
+	const int proxyFunctionAddressIndex = 186;
 
 	//14 bytes are required to place JMP[rip+0x] 0x1122334455667788
 	assert(hookLength >= stubJumpBackLength);
@@ -76,11 +85,13 @@ void MidfunctionHook::Hook(BYTE* sourceAddress, BYTE* targetAddress, const int h
 		0x52,														//push   rdx
 		0x51,														//push   rcx
 		0x50,														//push   rax
+		0x54,														//push	 rsp
 		0x48, 0x89, 0xE1,											//mov    rcx,rsp
-		0x48, 0x83, 0xEC, 0x20,										//sub    rsp,0x20					(allocate shadow space)
+		0x48, 0x83, 0xEC, 0x28,										//sub    rsp,0x20					(allocate shadow space)
 		0x48, 0xB8, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, //movabs rax,0x1122334455667788		(use register to have an absolute 8 byte call)
 		0xFF, 0xD0,													//call   rax						(call proxy function)
-		0x48, 0x83, 0xC4, 0x20,										//add    rsp,0x20					(deallocate shadow space)
+		0x48, 0x83, 0xC4, 0x28,										//add    rsp,0x20					(deallocate shadow space)
+		0x48, 0x83, 0xC4, 0x08,										//add	 rsp, 0x8
 		0x58,														//pop    rax
 		0x59,														//pop    rcx
 		0x5A,														//pop    rdx

@@ -12,7 +12,7 @@ class ESP : public Feature
 	bool siegeImpactLocation = true;
 
 	bool playerUnitEsp[8] = { true,true,true,true,true,true,true,true };
-	bool playerUnitDestinationEsp[8] = { true,true,true,true,true,true,true,true };
+	bool playerUnitDestinationEsp[8] = { false,false,false,false,false,false,false,false };
 
 	bool playerUnitNameEsp[8] = { false,false,false,false,false,false,false,false };
 	//bool playerBuildingEsp[8] = { false,true,true,true,true,true,true,true };

@@ -120,6 +120,16 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 
 		if (siegeImpactLocation)
 		{
+			if (std::string(unit->pUnitData->name).find("Projectile Scorpion") != std::string::npos)
+			{
+				Vector3* destination = unit->GetTargetPosition();
+				if (destination)
+				{
+					Vector2 screenDestinationPos = Engine::Get()->worldToScreen(*destination);
+					Renderer::Get()->RenderCircleFilled(ImVec2(screenDestinationPos.x, screenDestinationPos.y), 10, colors_hex[*player->pColor] & 0x77ffffff);
+				}
+			}
+
 			if (std::string(unit->pUnitData->name).find("Projectile Mangonel") != std::string::npos)
 			{
 				Vector3* destination = unit->GetTargetPosition();
