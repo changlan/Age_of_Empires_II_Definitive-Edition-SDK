@@ -231,7 +231,8 @@ void ESP::OnNeutralUnit(Unit* unit)
 		}
 
 		if (strcmp(unitName.c_str(), "BOARX") == 0 || strcmp(unitName.c_str(), "RHINO") == 0 ||
-			strcmp(unitName.c_str(), "BOAR") == 0 || strcmp(unitName.c_str(), "BOARJ") == 0)
+			strcmp(unitName.c_str(), "BOAR") == 0 || strcmp(unitName.c_str(), "BOARJ") == 0 || 
+			strcmp(unitName.c_str(), "ZEBRA") == 0)
 		{
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ff00);
 			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
@@ -247,7 +248,8 @@ void ESP::OnNeutralUnit(Unit* unit)
 			strcmp(unitName.c_str(), "PIG") == 0 || strcmp(unitName.c_str(), "LLAMAG") == 0 ||
 			strcmp(unitName.c_str(), "Cow Black") == 0 || strcmp(unitName.c_str(), "Cow Brown") == 0 ||
 			strcmp(unitName.c_str(), "Cow Black and White") == 0 || strcmp(unitName.c_str(), "BUFFALO") == 0 ||
-			strcmp(unitName.c_str(), "TURKYG") == 0 || strcmp(unitName.c_str(), "Cow Black") == 0)
+			strcmp(unitName.c_str(), "TURKYG") == 0 || strcmp(unitName.c_str(), "Cow Black") == 0 ||
+			strcmp(unitName.c_str(), "GOAT") == 0)
 		{
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x400000ff);
 			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
@@ -256,7 +258,7 @@ void ESP::OnNeutralUnit(Unit* unit)
 
 		if (strcmp(unitName.c_str(), "WOLFX") == 0 || strcmp(unitName.c_str(), "KOMODO") == 0 || 
 			strcmp(unitName.c_str(), "GJAGR") == 0 || strcmp(unitName.c_str(), "SLEOPA") == 0 ||
-			strcmp(unitName.c_str(), "BEAR") == 0 ||
+			strcmp(unitName.c_str(), "BEAR") == 0 || strcmp(unitName.c_str(), "CROCO") == 0 ||
 			strcmp(unitName.c_str(), "LION") == 0 || strcmp(unitName.c_str(), "TIGER") == 0)
 		{
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x40ff0000);
