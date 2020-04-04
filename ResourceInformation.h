@@ -5,5 +5,5 @@
 class ResourceInformation : public Feature
 {
 	//Callbacks
-	void OnMenuPlayerTreenode(Player* player, int playerIndex);
+	void OnMenuPlayerTreenode(Player* player, int playerIndex) override;
 };

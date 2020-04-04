@@ -7,7 +7,7 @@
 class VmtHook
 {
 private:
-	void** vmt;
+	void** vmt = nullptr;
 	std::map<int, void*> hookedfuncs;
 
 public:

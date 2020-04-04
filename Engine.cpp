@@ -22,10 +22,9 @@ Engine* Engine::Get()
 	return instance;
 }
 
-World* Engine::GetWorld()
+World* Engine::GetWorld() const
 {
 	PathfindingSystem* pathfindingSystem = reinterpret_cast<PathfindingSystem*>(base + Offsets::pathfindingSystem);
-	//printf("pathfindingSystem: %p\n", pathfindingSystem);
 	if (!pathfindingSystem)
 	{
 		return NULL;
@@ -33,17 +32,17 @@ World* Engine::GetWorld()
 	return pathfindingSystem->GetWorld();
 }
 
-MainScreen* Engine::GetMainScreen()
+MainScreen* Engine::GetMainScreen() const
 {
 	return reinterpret_cast<MainScreen*>(base + Offsets::mainScreen);
 }
 
-int Engine::GetTotalPlayers()
+int Engine::GetTotalPlayers() const
 {
 	return *reinterpret_cast<int32_t*>(base + Offsets::totalPlayers);
 }
 
-PlayerArray* Engine::GetPlayerArray()
+PlayerArray* Engine::GetPlayerArray() const
 {
 	MainScreen* mainScreen = GetMainScreen();
 	if (!mainScreen)
@@ -60,7 +59,7 @@ PlayerArray* Engine::GetPlayerArray()
 	return world->pPlayerArray;
 }
 
-Vector2 Engine::worldToScreen(Vector3 position)
+Vector2 Engine::worldToScreen(Vector3 position) const
 {
 	MainScreen* mainScreen = GetMainScreen();
 	static int tileSize = GetWorld()->pMap->GetTileSize();
@@ -82,17 +81,17 @@ Vector2 Engine::worldToScreen(Vector3 position)
 	return Vector2(screenXfinal,screenYfinal);
 }
 
-Vector2 Engine::worldToScreen(Unit* unit)
+Vector2 Engine::worldToScreen(Unit* unit) const
 {
 	return worldToScreen(unit->position);
 }
 
-uint32_t Engine::GetPlayerColor(int colorIndex)
+uint32_t Engine::GetPlayerColor(int colorIndex) const
 {
 	return playerColors[colorIndex];
 }
 
-ImVec4 Engine::GetPlayerColorImGUI(int colorIndex)
+ImVec4 Engine::GetPlayerColorImGUI(int colorIndex) const
 {
 	ImVec4 color;
 	switch (colorIndex)
@@ -125,7 +124,7 @@ ImVec4 Engine::GetPlayerColorImGUI(int colorIndex)
 	return color;
 }
 
-Player* Engine::GetPlayerByName(char* playerName)
+Player* Engine::GetPlayerByName(char* playerName) const
 {
 	MainScreen* mainScreen = GetMainScreen();
 	if (!mainScreen)
@@ -162,9 +161,9 @@ Player* Engine::GetPlayerByName(char* playerName)
 	return NULL;
 }
 
-Player* Engine::GetLocalPlayer()
+Player* Engine::GetLocalPlayer() const
 {
-	uint64_t tribePanelInven = *reinterpret_cast<uint64_t*>(base + Offsets::tribePanelInven);
+	const uint64_t tribePanelInven = *reinterpret_cast<uint64_t*>(base + Offsets::tribePanelInven);
 	if (!tribePanelInven)
 	{
 		return NULL;
@@ -173,4 +172,34 @@ Player* Engine::GetLocalPlayer()
 	{
 		return *reinterpret_cast<Player**>(tribePanelInven + Offsets::tribePanelInven_localPlayer);
 	}
+}
+
+void Engine::SendChat(const char* message, bool teamchat) const
+{
+	typedef void(__fastcall* tSendChat) (int64_t game, const char* text);
+	static tSendChat fSendChat = (tSendChat)(base + Offsets::sendChat);	//E8 ? ? ? ? 33 FF 49 8B 04
+	static int64_t game = base + Offsets::AVGame;
+
+	if (teamchat)
+	{
+		message = (";" + std::string(message)).c_str();
+	}
+	fSendChat(game, message); //4C 8B 2D ? ? ? ? 49 83 C5 08  + 3
+}
+
+void Engine::PrintNotification(const char* message) const
+{
+	typedef void(__fastcall* tPrintNotification) (GameScreen* AVGameScreen, const char* message, int unknown);
+	static tPrintNotification fPrintNotification = (tPrintNotification)(base + Offsets::printNotification); //48 83 EC 48 48 8B 05 ? ? ? ? 4C 8D
+
+	fPrintNotification(GetMainScreen()->pGameScreen, message, 1);
+}
+
+void Engine::PrintBottomNotification(const char* message, unsigned int hexcolor) const
+{
+	typedef void(__fastcall* tPrintBottomText) (GameScreen* AVGameScreen, const char* message, unsigned int hexcolor, int64_t unused);
+	static tPrintBottomText fPrintBottomText = (tPrintBottomText)(base + Offsets::printBottomText);
+
+	//RBGA
+	fPrintBottomText(GetMainScreen()->pGameScreen, message, hexcolor, 0xffffffffffffffff);
 }

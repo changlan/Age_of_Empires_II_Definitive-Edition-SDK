@@ -8,7 +8,6 @@ class Renderer
 {
 private:
 	static Renderer* _instance;
-	ImFont* m_pFont;
 
 	Renderer();
 	~Renderer();

@@ -1,8 +1,7 @@
 #pragma once
 #include "Feature.h"
 
-class DetourHook64;
-class MinimapText : public Feature
+class Debug : public Feature
 {
 	//Callbacks
 	void OnInitialise() override;

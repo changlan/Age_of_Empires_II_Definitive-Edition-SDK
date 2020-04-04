@@ -86,16 +86,16 @@ struct Registers
 class MidfunctionHook
 {
 	//bytes overwritten by placing the detour
-	BYTE* originalBytes;
+	BYTE* originalBytes = nullptr;
 
 	//location where hook is placed
-	BYTE* sourceAddress;
+	BYTE* sourceAddress = nullptr;
 
 	//runs overwritten instructions
-	BYTE* trampoline;
+	BYTE* trampoline = nullptr;
 
 	//number of bytes to overwrite (don't cut instructions in half)
-	int hookLength;
+	int hookLength = 0;
 
 public:
 	static void OverwriteRegister(int64_t rsp, Register reg, int64_t value);

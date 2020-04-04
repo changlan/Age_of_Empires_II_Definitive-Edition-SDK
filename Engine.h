@@ -24,16 +24,20 @@ class Engine
 
 public:
 	static Engine* Get();
-	World* GetWorld();
-	MainScreen* GetMainScreen();
-	int GetTotalPlayers();
-	PlayerArray* GetPlayerArray();
+	World* GetWorld() const;
+	MainScreen* GetMainScreen() const;
+	int GetTotalPlayers() const;
+	PlayerArray* GetPlayerArray() const;
 
-	Vector2 worldToScreen(Vector3 position);
-	Vector2 worldToScreen(Unit* unit);
+	Vector2 worldToScreen(Vector3 position) const;
+	Vector2 worldToScreen(Unit* unit) const;
 
-	uint32_t GetPlayerColor(int colorIndex);
-	ImVec4 GetPlayerColorImGUI(int colorIndex);
-	Player* GetPlayerByName(char* playername);
-	Player* GetLocalPlayer();
+	uint32_t GetPlayerColor(int colorIndex) const;
+	ImVec4 GetPlayerColorImGUI(int colorIndex) const;
+	Player* GetPlayerByName(char* playername) const;
+	Player* GetLocalPlayer() const;
+
+	void SendChat(const char* message, bool teamchat = false) const;
+	void PrintNotification(const char* message) const;
+	void PrintBottomNotification(const char* message, unsigned int hexcolor) const;
 };

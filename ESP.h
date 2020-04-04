@@ -21,10 +21,10 @@ class ESP : public Feature
 	static uint32_t colors_hex[8];
 
 	//Callbacks
-	void OnUnitIteration(Unit* unit, Player* player, int playerIndex);
-	void OnMenuPlayerTreenode(Player* player, int playerIndex);
-	void OnNeutralUnit(Unit* unit);
-	void OnMenuMainWindow();
+	void OnUnitIteration(Unit* unit, Player* player, int playerIndex) override;
+	void OnMenuPlayerTreenode(Player* player, int playerIndex) override;
+	void OnNeutralUnit(Unit* unit) override;
+	void OnMenuMainWindow() override;
 
 	void DrawBox(Unit* unit, int32_t color, bool drawName);
 	void DrawBox(Vector3 position, Vector2 edgeSize, int32_t color);

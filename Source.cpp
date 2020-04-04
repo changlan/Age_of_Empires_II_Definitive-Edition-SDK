@@ -14,14 +14,15 @@
 #include "FeatureManager.h"
 #include "VmtHook.h"
 
-typedef HRESULT(__stdcall *D3D11PresentHook) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 
-D3D11PresentHook phookD3D11Present = NULL;
+typedef HRESULT(__stdcall* D3D11PresentHook) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 
-ID3D11Device *pDevice = NULL;
-ID3D11DeviceContext *pContext = NULL;
+D3D11PresentHook phookD3D11Present = nullptr;
 
-DWORD_PTR* pSwapChainVtable = NULL;
+ID3D11Device* pDevice = nullptr;
+ID3D11DeviceContext* pContext = nullptr;
+
+DWORD_PTR* pSwapChainVtable = nullptr;
 
 
 #include "main.h" //helper funcs
@@ -66,13 +67,13 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		firstTime = false; //only once
 
 		//get device
-		if (SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void **)&pDevice)))
+		if (SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&pDevice)))
 		{
 			//SwapChain = pSwapChain;
 			pSwapChain->GetDevice(__uuidof(pDevice), (void**)&pDevice);
 			pDevice->GetImmediateContext(&pContext);
 		}
-		
+
 		//imgui
 		DXGI_SWAP_CHAIN_DESC sd;
 		pSwapChain->GetDesc(&sd);
@@ -81,6 +82,7 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantTextInput || ImGui::GetIO().WantCaptureKeyboard; //control menu with mouse
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
 		window = sd.OutputWindow;
+
 
 		//wndprochandler
 		OriginalWndProcHandler = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)hWndProc);
@@ -126,7 +128,7 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		rasterizer_desc.MultisampleEnable = false;
 		rasterizer_desc.AntialiasedLineEnable = false;
 		pDevice->CreateRasterizerState(&rasterizer_desc, &DEPTHBIASState_FALSE);
-		
+
 		//create normal rasterizer state
 		D3D11_RASTERIZER_DESC nrasterizer_desc;
 		ZeroMemory(&nrasterizer_desc, sizeof(nrasterizer_desc));
@@ -142,13 +144,13 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		nrasterizer_desc.MultisampleEnable = false;
 		nrasterizer_desc.AntialiasedLineEnable = false;
 		pDevice->CreateRasterizerState(&nrasterizer_desc, &DEPTHBIASState_TRUE);
-		
+
 		//load cfg settings
 		LoadCfg();
 	}
 
 	//create rendertarget
-	if (RenderTargetView == NULL)
+	if (RenderTargetView == nullptr)
 	{
 		//viewport
 		pContext->RSGetViewports(&vps, &viewport);
@@ -156,7 +158,7 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		ScreenCenterY = viewport.Height / 2.0f;
 
 		//get backbuffer
-		ID3D11Texture2D* backbuffer = NULL;
+		ID3D11Texture2D* backbuffer = nullptr;
 		hr = pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backbuffer);
 		if (FAILED(hr)) {
 			Log("Failed to get BackBuffer");
@@ -164,7 +166,7 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		}
 
 		//create rendertargetview
-		hr = pDevice->CreateRenderTargetView(backbuffer, NULL, &RenderTargetView);
+		hr = pDevice->CreateRenderTargetView(backbuffer, nullptr, &RenderTargetView);
 		backbuffer->Release();
 		if (FAILED(hr)) {
 			Log("Failed to get RenderTarget");
@@ -172,8 +174,9 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		}
 	}
 	else //call before you draw
-		pContext->OMSetRenderTargets(1, &RenderTargetView, NULL);
-		
+	{
+		pContext->OMSetRenderTargets(1, &RenderTargetView, nullptr);
+	}
 
 	//imgui
 	ImGui_ImplWin32_NewFrame();
@@ -203,7 +206,6 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 		hDXGIDLL = GetModuleHandleA("dxgi.dll");
 		Sleep(100);
 	} while (!hDXGIDLL);
-	//Sleep(100);
 
 	IDXGISwapChain* pSwapChain;
 
@@ -260,7 +262,6 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 		return NULL;
 	}
 
-
 	pSwapChainVtable = (DWORD_PTR*)pSwapChain;
 	pSwapChainVtable = (DWORD_PTR*)pSwapChainVtable[0];
 
@@ -269,27 +270,25 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 	VmtHook presentHook = VmtHook((void**)pSwapChainVtable);
 	presentHook.Hook(8, hookD3D11Present);
 
-
-	DWORD dwOld;
-	VirtualProtect(phookD3D11Present, 2, PAGE_EXECUTE_READWRITE, &dwOld);
+	pDevice->Release();
+	pContext->Release();
+	pSwapChain->Release();
 
 	while (!(GetAsyncKeyState(VK_F2) & 0x8000)) {
 		Sleep(10);
 	}
 
-	pDevice->Release();
-	pContext->Release();
-	pSwapChain->Release();
-
 	FeatureManager::Get()->OnShutdown();
-
+	
 	presentHook.Unhook();
 
+	Sleep(1000);
+	
 	(WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)OriginalWndProcHandler);
 
-	FreeLibraryAndExitThread((HMODULE)hModule, 0);
+	Sleep(1000);
 
-	return NULL;
+	FreeLibraryAndExitThread((HMODULE)hModule, 0);
 }
 
 BOOL __stdcall DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
@@ -298,12 +297,13 @@ BOOL __stdcall DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 	{
 	case DLL_PROCESS_ATTACH:
 		DisableThreadLibraryCalls(hModule);
-		CreateThread(NULL, 0, InitHooks, hModule, 0, NULL);
+		CreateThread(nullptr, 0, InitHooks, hModule, 0, nullptr);
 		break;
 
 	case DLL_PROCESS_DETACH:
-		//Sleep(1000);
 		OnDllDetach();
+		break;
+	default:
 		break;
 	}
 	return TRUE;

@@ -1,6 +1,3 @@
-
-
-
 #include "MinimapText.h"
 
 #include "Engine.h"
@@ -80,18 +77,6 @@ void __fastcall minimapProxy(Registers* registers)
 void MinimapText::OnInitialise()
 {
 	hookEnabled = &enabled;
-
-	int64_t base = (int64_t)GetModuleHandle(NULL);
-
-	Patcher patcher;
-
-	//74 7F 48 8D 4B 01 48 85 C9 74 59   + 14
-	//Patch usage of short string optimizaation (playernames <= 15)
-	//patcher.NOPBytes((BYTE*)(base + 0xA426EE), 6);
-
-	//74 7F 48 8D 4B 01 48 85 C9 74 59   + 18
-	//Increase space allocated for playernames to 0x120 bytes so we can write as much as we want to on screen
-	//Patcher().Patch((BYTE*)(base + 0xA426F5), (int32_t)0x120);
 
 	minimapHook.Hook((BYTE*)(int64_t)GetModuleHandle(NULL) + Offsets::minimapHookOffset, (BYTE*)minimapProxy, 14);
 }

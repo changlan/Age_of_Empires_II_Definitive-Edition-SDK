@@ -5,6 +5,16 @@ void Feature::OnInitialise()
 
 }
 
+void Feature::OnGameStart()
+{
+
+}
+
+void Feature::OnTurn()
+{
+
+}
+
 void Feature::OnShutdown()
 {
 

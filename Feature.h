@@ -10,6 +10,8 @@ protected:
 	bool enabled = true;
 public:
 	virtual void OnInitialise();
+	virtual void OnGameStart();
+	virtual void OnTurn();
 	virtual void OnShutdown();
 
 	virtual void OnDraw();

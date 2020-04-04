@@ -20,7 +20,7 @@ FeatureManager* FeatureManager::Get()
 	return instance;
 }
 
-void FeatureManager::registerFeature(Feature* feature)
+void FeatureManager::RegisterFeature(Feature* feature)
 {
 	static int feature_numer = 0;
 	printf("Registered feature %d\n", feature_numer++);
@@ -32,6 +32,22 @@ void FeatureManager::OnInitialise()
 	for (Feature* feature : features)
 	{
 		feature->OnInitialise();
+	}
+}
+
+void FeatureManager::OnGameStart()
+{
+	for (Feature* feature : features)
+	{
+		feature->OnGameStart();
+	}
+}
+
+void FeatureManager::OnTurn()
+{
+	for (Feature* feature : features)
+	{
+		feature->OnTurn();
 	}
 }
 

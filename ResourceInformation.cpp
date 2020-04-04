@@ -13,5 +13,5 @@ void ResourceInformation::OnMenuPlayerTreenode(Player* player, int playerIndex)
 	ImGui::Text("Food: %.f", player->pResources->food);
 	ImGui::Text("Gold: %.f", player->pResources->gold);
 	ImGui::Text("Stone: %.f", player->pResources->stone);
-	ImGui::Text("PopSpaceLeft: %.f/%.f", player->pResources->popSpaceLeft);
+	ImGui::Text("PopSpaceLeft: %.f/%.f", player->pResources->currentPop, player->pResources->currentPop + player->pResources->popSpaceLeft);
 }

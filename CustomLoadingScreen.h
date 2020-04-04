@@ -5,16 +5,16 @@
 class CustomLoadingScreen : public Feature
 {
 private:
-	CustomLoadingScreen();
-
 	char* imagePath;
 
 public:
+	CustomLoadingScreen() = delete;
+	
 	//Supports .gif, .bmp, .jpg, .png
 	CustomLoadingScreen(char* imagePath);
 
 	//Callbacks
-	void OnInitialise();
-	void OnMenuMainWindow();
-	void OnShutdown();
+	void OnInitialise() override;
+	void OnMenuMainWindow() override;
+	void OnShutdown() override;
 };

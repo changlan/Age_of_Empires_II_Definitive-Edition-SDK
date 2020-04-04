@@ -59,11 +59,11 @@ void Renderer::RenderText(const std::string& text, const ImVec2& position, float
 
 	if (center)
 	{
-		window->DrawList->AddText(NULL, 0, position, ImGui::GetColorU32({ r, g, b, a }), text.c_str());
+		window->DrawList->AddText(NULL, size, position, ImGui::GetColorU32({ r, g, b, a }), text.c_str());
 	}
 	else
 	{
-		window->DrawList->AddText(NULL, 0, position, ImGui::GetColorU32({ r,g,b,a }), text.c_str());
+		window->DrawList->AddText(NULL, size, position, ImGui::GetColorU32({ r,g,b,a }), text.c_str());
 	}
 }
 
@@ -87,9 +87,6 @@ void Renderer::RenderPolygon(const ImVec2* points, int pointCount, uint32_t colo
 	}
 	RenderLine(points[pointCount - 1], points[0], color, thickness);
 }
-
-
-
 
 void Renderer::RenderCircle(const ImVec2& position, float radius, uint32_t color, float thickness, uint32_t segments)
 {
@@ -153,7 +150,6 @@ void Renderer::RenderRectFilled(const ImVec2& from, const ImVec2& to, uint32_t c
 
 	window->DrawList->AddRectFilled(from, to, ImGui::GetColorU32({ r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f }), rounding, roundingCornersFlags);
 }
-
 
 void Renderer::DrawUnitCollisionRectangle(ImVec2 screenPositionCenter, ImVec2 collision, uint32_t color)
 {

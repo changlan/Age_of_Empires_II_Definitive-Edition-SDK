@@ -150,6 +150,7 @@
     <ClInclude Include="Classes.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="CustomLoadingScreen.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="Feature.h" />
@@ -177,6 +178,7 @@
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="CustomLoadingScreen.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="Feature.cpp" />

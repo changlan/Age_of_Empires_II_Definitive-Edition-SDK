@@ -5,6 +5,7 @@
 
 void RelicManager::OnNeutralUnit(Unit* unit)
 {
+	
 }
 
 void RelicManager::OnMenuMainWindow()
@@ -47,5 +48,4 @@ void RelicManager::OnMenuMainWindow()
 		}
 	}
 	ImGui::Separator();
-	
 }

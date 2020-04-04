@@ -110,7 +110,6 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 
 void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 {
-
 	if (playerUnitEsp[playerIndex])
 	{
 		if (strcmp(unit->pUnitData->name, "FLARE") == 0)
@@ -231,14 +230,15 @@ void ESP::OnNeutralUnit(Unit* unit)
 		}
 
 		if (strcmp(unitName.c_str(), "BOARX") == 0 || strcmp(unitName.c_str(), "RHINO") == 0 ||
-			strcmp(unitName.c_str(), "BOAR") == 0 || strcmp(unitName.c_str(), "BOARJ") == 0 || 
-			strcmp(unitName.c_str(), "ZEBRA") == 0)
+			strcmp(unitName.c_str(), "BOAR") == 0 || strcmp(unitName.c_str(), "BOARJ") == 0 ||
+			strcmp(unitName.c_str(), "WELEF") == 0)
 		{
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ff00);
 			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
 		}
 
-		if (strcmp(unitName.c_str(), "DEERX") == 0 || strcmp(unitName.c_str(), "IBEX") == 0)
+		if (strcmp(unitName.c_str(), "DEERX") == 0 || strcmp(unitName.c_str(), "IBEX") == 0 ||
+			strcmp(unitName.c_str(), "ZEBRA") == 0 || strcmp(unitName.c_str(), "OSTRICH") == 0)
 		{
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ffff);
 			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
@@ -254,7 +254,6 @@ void ESP::OnNeutralUnit(Unit* unit)
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x400000ff);
 			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
 		}
-
 
 		if (strcmp(unitName.c_str(), "WOLFX") == 0 || strcmp(unitName.c_str(), "KOMODO") == 0 || 
 			strcmp(unitName.c_str(), "GJAGR") == 0 || strcmp(unitName.c_str(), "SLEOPA") == 0 ||

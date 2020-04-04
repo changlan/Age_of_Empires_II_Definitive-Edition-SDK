@@ -15,10 +15,12 @@ private:
 
 public:
 	static FeatureManager* Get();
-	void registerFeature(Feature* feature);
+	void RegisterFeature(Feature* feature);
 
 	//Callbacks
 	void OnInitialise();
+	void OnGameStart();
+	void OnTurn();
 	void OnShutdown();
 	void OnDraw();
 	void OnMenuMainWindow();

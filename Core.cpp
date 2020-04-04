@@ -12,6 +12,7 @@
 #include "Engine.h"
 #include "FeatureManager.h"
 #include "Utility.h"
+#include "MidfunctionHook.h"
 
 //Features
 #include "ResourceInformation.h"
@@ -19,16 +20,42 @@
 #include "MinimapText.h"
 #include "RelicManager.h"
 #include "CustomLoadingScreen.h"
+#include "Debug.h"
+
+MidfunctionHook onGameStartHook = MidfunctionHook();
+MidfunctionHook onTurnHook = MidfunctionHook();
+
+void __fastcall  OnGameStartHook(Registers* registers)
+{
+	FeatureManager::Get()->OnGameStart();
+	printf("OnGameStart()\n");
+}
+
+
+void __fastcall  OnTurnHook(Registers* registers)
+{
+	FeatureManager::Get()->OnTurn();
+	printf("OnTurn()\n");
+}
+
 
 Core::Core()
 {
+	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xba276a, (BYTE*)OnGameStartHook, 15);
+	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0x7463b, (BYTE*)OnTurnHook, 14);
+
 	FeatureManager* featureManager = FeatureManager::Get();
+
 	//Register Features here
-	featureManager->registerFeature(new ResourceInformation());
-	featureManager->registerFeature(new ESP());
-	featureManager->registerFeature(new MinimapText());
-	featureManager->registerFeature(new RelicManager());
-	featureManager->registerFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
+	featureManager->RegisterFeature(new ResourceInformation());
+	featureManager->RegisterFeature(new ESP());
+	featureManager->RegisterFeature(new MinimapText());
+	featureManager->RegisterFeature(new RelicManager());
+	featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
+
+#ifdef _DEBUG
+	featureManager->RegisterFeature(new Debug());
+#endif
 
 	FeatureManager::Get()->OnInitialise();
 }
@@ -60,17 +87,28 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 					ImGui::Text("%s", unit->pUnitData->name);
 					ImGui::SameLine();
 					std::string text = std::string("Copy##") + std::string(unit->pUnitData->name) + std::to_string(i);
-					/*if (ImGui::Button(text.c_str()))
-					{
-						unit->MoveTo(Engine::Get()->GetWorld(), 50.f, 50.f);
-					}*/
 
 					if (ImGui::Button(text.c_str()))
 					{
 						Utility::CopyToClipboard((uint64_t)unit);
 					}
+					std::string vmtTree = std::string("VMT##") + std::string(unit->pUnitData->name) + "VMT";
+					if (ImGui::TreeNode(vmtTree.c_str()))
+					{
+						for (int vmtIndex = 0; vmtIndex < 175; vmtIndex++)
+						{
+							std::string vmtText = std::string("Copy##") + std::string(unit->pUnitData->name) + std::to_string(vmtIndex) + "VMT";
+							ImGui::Text("%d - %p", vmtIndex, *(int64_t**)(*(int64_t**)unit + vmtIndex));
+							ImGui::SameLine();
+							if (ImGui::Button(vmtText.c_str()))
+							{
+								Utility::CopyToClipboard((uint64_t) * (int64_t**)(*(int64_t**)unit + vmtIndex));
+							}
+						}
+						ImGui::TreePop();
+					}
 
-			/*		if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Building)
+					if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Building)
 					{
 						buildingCount++;
 					}
@@ -81,7 +119,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 					if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Cavalry)
 					{
 						calavaryCount++;
-					}*/
+					}
 				}
 			}
 			ImGui::Text("Buildings %.d", buildingCount);
@@ -149,7 +187,7 @@ void Core::OnPresent()
 			{
 				continue;
 			}
-			if (skipLocalplayer && player == Engine::Get()->GetLocalPlayer()) 
+			if (skipLocalplayer && player == Engine::Get()->GetLocalPlayer())
 			{
 				continue;
 			}
