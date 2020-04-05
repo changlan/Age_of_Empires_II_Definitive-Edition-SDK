@@ -21,6 +21,7 @@ public:
 	void OnInitialise();
 	void OnGameStart();
 	void OnTurn();
+	void OnCreateUnit(Unit* unit);
 	void OnShutdown();
 	void OnDraw();
 	void OnMenuMainWindow();

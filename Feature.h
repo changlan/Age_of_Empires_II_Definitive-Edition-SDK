@@ -12,6 +12,7 @@ public:
 	virtual void OnInitialise();
 	virtual void OnGameStart();
 	virtual void OnTurn();
+	virtual void OnUnitCreated(Unit* unit);
 	virtual void OnShutdown();
 
 	virtual void OnDraw();

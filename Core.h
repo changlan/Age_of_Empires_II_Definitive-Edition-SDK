@@ -13,4 +13,5 @@ class Core
 public:
     Core();
     void OnPresent();
+    void OnShutdown();
 };

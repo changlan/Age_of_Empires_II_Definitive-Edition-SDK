@@ -1,3 +1,7 @@
+PauseManager.h
+PauseManager.cpp
+
+
 # ---> C++
 # Compiled Object files
 *.slo

@@ -19,17 +19,17 @@ namespace Offsets
 	//48 8B 83 ? ? ? ? 48 8B 48 70 F3 0F 10 
 	int64_t tribePanelInven_localPlayer = 0x208;
 
-	int64_t AVGame = 0x2902590;
+	int64_t pAVGame = 0x2902590;
 
-	//ESP
 	//48 8B 8B ? ? ? ? E8 ? ? ? ? 48 85 FF
 	int64_t unit_actionlist = 0x278;
 
 	//MinimapText
 	int64_t minimapHookOffset = 0xBE6F99;
 
-	int64_t printNotification = 0xbdd670;
-	int64_t printBottomText = 0xbcdc00;
-
-	int64_t sendChat = 0x96f300;
+	//Functions
+	int64_t printNotification = 0xbdd670;		//48 83 EC 48 48 8B 05 ? ? ? ? 4C 8D
+	int64_t printBottomText = 0xbcdc00;			//48 8B C4 48 83 EC 78 F3 0F 10 05 ? ? ? ? 41
+	int64_t pauseGame = 0x7f5740;				//48 89 5C 24 ? 55 48 8D 6C 24 ? 48 81 EC ? ? ? ? 80
+	int64_t sendChat = 0x96f300;				//E8 ? ? ? ? 33 FF 49 8B 04
 }

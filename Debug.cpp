@@ -13,13 +13,13 @@ void Debug::OnMenuMainWindow()
 {
 	ImGui::Separator();
 	ImGui::Text("Debug");
-	if (ImGui::Button("Annoy @Kleon"))
+	if (ImGui::Button("SendChat"))
 	{
-		Engine::Get()->PrintNotification("When DOOM Eternal hack? ");
+		Engine::Get()->SendChat("Testmessage", true);
 	}
-	if (ImGui::Button("Annoy @Timb3r"))
+	if (ImGui::Button("SendChat2"))
 	{
-		Engine::Get()->PrintBottomNotification("I do miss the meme war :(", 0xffffffff);
+		Engine::Get()->SendChat("Testmessage2", false);
 	}
 	ImGui::Separator();
 }
@@ -27,4 +27,9 @@ void Debug::OnMenuMainWindow()
 void Debug::OnShutdown()
 {
 
+}
+
+void Debug::OnUnitCreated(Unit* unit)
+{
+	printf("Created %s\n", unit->pUnitData->name);
 }

@@ -117,6 +117,15 @@
     <ClInclude Include="Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PauseManager.h">
+      <Filter>Header Files\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="CastleManager.h">
+      <Filter>Header Files\Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadsafeQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -183,6 +192,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
+      <Filter>Source Files\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseManager.cpp">
+      <Filter>Source Files\Feature</Filter>
+    </ClCompile>
+    <ClCompile Include="CastleManager.cpp">
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
   </ItemGroup>

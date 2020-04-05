@@ -15,6 +15,11 @@ void Feature::OnTurn()
 
 }
 
+void Feature::OnUnitCreated(Unit* unit)
+{
+
+}
+
 void Feature::OnShutdown()
 {
 

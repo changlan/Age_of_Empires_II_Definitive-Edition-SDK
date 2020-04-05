@@ -226,6 +226,21 @@ public:
 
 }; //Size=0x5CC8
 
+class CommHandler
+{
+public:
+	char pad_0x0000[0xC08]; //0x0000
+	unsigned char isGamePaused; //0x0C08 
+};
+
+class Game
+{
+public:
+	char pad_0x0000[0x298]; //0x0000
+	CommHandler* pCommHandler; //0x0298 
+	char pad_0x02A0[0x1A8]; //0x02A0
+}; //Size=0x0448
+
 class MainScreen
 {
 public:

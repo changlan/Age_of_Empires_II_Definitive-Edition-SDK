@@ -51,6 +51,14 @@ void FeatureManager::OnTurn()
 	}
 }
 
+void FeatureManager::OnCreateUnit(Unit* unit)
+{
+	for (Feature* feature : features)
+	{
+		feature->OnUnitCreated(unit);
+	}
+}
+
 void FeatureManager::OnShutdown()
 {
 	for (Feature* feature : features)

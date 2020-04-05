@@ -7,4 +7,5 @@ class Debug : public Feature
 	void OnInitialise() override;
 	void OnMenuMainWindow() override;
 	void OnShutdown() override;
+	void OnUnitCreated(Unit* unit) override;
 };

@@ -15,15 +15,18 @@
 #include "MidfunctionHook.h"
 
 //Features
+#include "CastleManager.h"
 #include "ResourceInformation.h"
 #include "ESP.h"
 #include "MinimapText.h"
 #include "RelicManager.h"
 #include "CustomLoadingScreen.h"
 #include "Debug.h"
+#include "PauseManager.h"
 
 MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();
+MidfunctionHook onCreateUnitHook = MidfunctionHook();
 
 void __fastcall  OnGameStartHook(Registers* registers)
 {
@@ -38,12 +41,48 @@ void __fastcall  OnTurnHook(Registers* registers)
 	printf("OnTurn()\n");
 }
 
+void __fastcall  OnCreateUnitHook(Registers* registers)
+{
+	__try
+	{
+		const auto objectManager = reinterpret_cast<ObjectManager*>(registers->rcx);
+		const int totalPlayers = Engine::Get()->GetTotalPlayers();
+
+		bool foundArray = false;
+		PlayerArray* playerArray = Engine::Get()->GetPlayerArray();
+		for (int i = 1; i <= totalPlayers; i++)
+		{
+			Player* player = playerArray->playerData[i].player;
+			if (!player)
+			{
+				continue;
+			}
+
+			if (player->pObjectManager == objectManager)
+			{
+				foundArray = true;
+				break;
+			}
+		}
+
+		if (foundArray)
+		{
+			const auto unit = reinterpret_cast<Unit*>(registers->rdx);
+			FeatureManager::Get()->OnCreateUnit(unit);
+		}
+	}
+	__except (1)
+	{
+		
+	}
+}
 
 Core::Core()
 {
 	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xba276a, (BYTE*)OnGameStartHook, 15);
 	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0x7463b, (BYTE*)OnTurnHook, 14);
-
+	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xdce840, (BYTE*)OnCreateUnitHook, 15);
+	
 	FeatureManager* featureManager = FeatureManager::Get();
 
 	//Register Features here
@@ -52,6 +91,8 @@ Core::Core()
 	featureManager->RegisterFeature(new MinimapText());
 	featureManager->RegisterFeature(new RelicManager());
 	featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
+	//featureManager->RegisterFeature(new PauseManager());
+	featureManager->RegisterFeature(new CastleManager());
 
 #ifdef _DEBUG
 	featureManager->RegisterFeature(new Debug());
@@ -70,7 +111,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 		ImGui::PushStyleColor(ImGuiCol_Text, 0xffffffff);
 		ImGui::Text("Player %p (%f, %f)", player, player->xScreenPos, player->yScreenPos);
 		FeatureManager::Get()->OnMenuPlayerTreenode(player, playerIndex);
-		if (ImGui::TreeNode("Units"))
+		if (ImGui::TreeNode(player->pObjectManager->units, "Units %p", (int64_t)player->pObjectManager->units))
 		{
 			int buildingCount = 0;
 			int infantryCount = 0;
@@ -212,12 +253,16 @@ void Core::OnPresent()
 			{
 				if (ImGui::Begin("Age of Empires 2 DE", &openOverlay, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 				{
-					ImGui::Text("World %p", world);
-					ImGui::Text("Map %p tilesize %d", world->pMap, world->pMap->GetTileSize());
-					ImGui::Text("Localplayer %p", Engine::Get()->GetLocalPlayer());
-					ImGui::Text("PlayerArray %p", playerArray);
-					ImGui::Text("totalPlayers %d", totalPlayers);
-					ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
+					if (ImGui::TreeNode("Debug"))
+					{
+						ImGui::Text("World %p", world);
+						ImGui::Text("Map %p tilesize %d", world->pMap, world->pMap->GetTileSize());
+						ImGui::Text("Localplayer %p", Engine::Get()->GetLocalPlayer());
+						ImGui::Text("PlayerArray %p", playerArray);
+						ImGui::Text("totalPlayers %d", totalPlayers);
+						ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
+						ImGui::TreePop();
+					}
 					ImGui::Separator();
 					ImGui::Text("Player Information");
 					for (int i = 0; i <= totalPlayers; i++)
@@ -247,4 +292,9 @@ void Core::OnPresent()
 			Renderer::Get()->EndScene();
 		}
 	}
+}
+
+void Core::OnShutdown()
+{
+	onCreateUnitHook.Unhook();
 }

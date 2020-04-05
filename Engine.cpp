@@ -32,6 +32,11 @@ World* Engine::GetWorld() const
 	return pathfindingSystem->GetWorld();
 }
 
+Game* Engine::GetGame() const
+{
+	return *reinterpret_cast<Game**>(base + Offsets::pAVGame);
+}
+
 MainScreen* Engine::GetMainScreen() const
 {
 	return reinterpret_cast<MainScreen*>(base + Offsets::mainScreen);
@@ -66,7 +71,6 @@ Vector2 Engine::worldToScreen(Vector3 position) const
 	int tile_width = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
 	int tile_height = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
 	
-
 	float xDelta = position.x - mainScreen->pGameScreen->pMainView->ScreenPosX ;
 	float yDelta = position.y - mainScreen->pGameScreen->pMainView->ScreenPosY;
 
@@ -145,7 +149,6 @@ Player* Engine::GetPlayerByName(char* playerName) const
 	}
 	int totalPlayers = GetTotalPlayers();
 
-
 	for (int i = 0; i <= totalPlayers; i++)
 	{
 		Player* player = playerArray->playerData[i].player;
@@ -168,30 +171,41 @@ Player* Engine::GetLocalPlayer() const
 	{
 		return NULL;
 	}
-	else
-	{
-		return *reinterpret_cast<Player**>(tribePanelInven + Offsets::tribePanelInven_localPlayer);
-	}
+	return *reinterpret_cast<Player**>(tribePanelInven + Offsets::tribePanelInven_localPlayer);
 }
 
+//
+//Pauses the game
+void Engine::PauseGame() const
+{
+	typedef int64_t(__fastcall* tPauseGame)(CommHandler* CommHandler);
+	static tPauseGame fPauseGame = (tPauseGame)(base + Offsets::pauseGame);
+	fPauseGame(Get()->GetGame()->pCommHandler);
+}
+
+//
+//Sends a chat message. Only to be called from rendering thread
 void Engine::SendChat(const char* message, bool teamchat) const
 {
 	typedef void(__fastcall* tSendChat) (int64_t game, const char* text);
-	static tSendChat fSendChat = (tSendChat)(base + Offsets::sendChat);	//E8 ? ? ? ? 33 FF 49 8B 04
-	static int64_t game = base + Offsets::AVGame;
+	static tSendChat fSendChat = (tSendChat)(base + Offsets::sendChat);
+	static int64_t game = *(int64_t*)(base + Offsets::pAVGame);
 
 	if (teamchat)
 	{
-		message = (";" + std::string(message)).c_str();
+		std::string teammessage = ";" + std::string(message);
+		fSendChat(game, teammessage.c_str());
 	}
-	fSendChat(game, message); //4C 8B 2D ? ? ? ? 49 83 C5 08  + 3
+	else
+	{
+		fSendChat(game, message);
+	}
 }
 
 void Engine::PrintNotification(const char* message) const
 {
 	typedef void(__fastcall* tPrintNotification) (GameScreen* AVGameScreen, const char* message, int unknown);
-	static tPrintNotification fPrintNotification = (tPrintNotification)(base + Offsets::printNotification); //48 83 EC 48 48 8B 05 ? ? ? ? 4C 8D
-
+	static tPrintNotification fPrintNotification = (tPrintNotification)(base + Offsets::printNotification);
 	fPrintNotification(GetMainScreen()->pGameScreen, message, 1);
 }
 
@@ -199,7 +213,5 @@ void Engine::PrintBottomNotification(const char* message, unsigned int hexcolor)
 {
 	typedef void(__fastcall* tPrintBottomText) (GameScreen* AVGameScreen, const char* message, unsigned int hexcolor, int64_t unused);
 	static tPrintBottomText fPrintBottomText = (tPrintBottomText)(base + Offsets::printBottomText);
-
-	//RBGA
-	fPrintBottomText(GetMainScreen()->pGameScreen, message, hexcolor, 0xffffffffffffffff);
+	fPrintBottomText(GetMainScreen()->pGameScreen, message, hexcolor, 0xffffffffffffffff); //Color format: RBGA
 }

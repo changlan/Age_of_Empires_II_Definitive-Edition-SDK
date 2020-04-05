@@ -7,6 +7,7 @@ struct ImVec4;
 
 class World;
 class Unit;
+class Game;
 class MainScreen;
 class Player;
 class PlayerArray;
@@ -25,6 +26,8 @@ class Engine
 public:
 	static Engine* Get();
 	World* GetWorld() const;
+
+	Game* GetGame() const;
 	MainScreen* GetMainScreen() const;
 	int GetTotalPlayers() const;
 	PlayerArray* GetPlayerArray() const;
@@ -37,6 +40,7 @@ public:
 	Player* GetPlayerByName(char* playername) const;
 	Player* GetLocalPlayer() const;
 
+	void PauseGame() const;
 	void SendChat(const char* message, bool teamchat = false) const;
 	void PrintNotification(const char* message) const;
 	void PrintBottomNotification(const char* message, unsigned int hexcolor) const;
