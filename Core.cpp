@@ -22,7 +22,7 @@
 #include "RelicManager.h"
 #include "CustomLoadingScreen.h"
 #include "Debug.h"
-#include "PauseManager.h"
+//#include "PauseManager.h"
 
 MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();

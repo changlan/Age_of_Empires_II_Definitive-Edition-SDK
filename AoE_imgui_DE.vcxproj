@@ -197,7 +197,6 @@
     <ClCompile Include="MinimapText.cpp" />
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Patcher.cpp" />
-    <ClCompile Include="PauseManager.cpp" />
     <ClCompile Include="RelicManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceInformation.cpp" />
