@@ -18,6 +18,8 @@ public:
 	void RegisterFeature(Feature* feature);
 
 	//Callbacks
+	void LoadConfig();
+	void SaveConfig();
 	void OnInitialise();
 	void OnGameStart();
 	void OnTurn();

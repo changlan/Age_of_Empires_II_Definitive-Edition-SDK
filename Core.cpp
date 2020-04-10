@@ -22,7 +22,7 @@
 #include "RelicManager.h"
 #include "CustomLoadingScreen.h"
 #include "Debug.h"
-#include "PauseManager.h"
+//#include "PauseManager.h"
 
 MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();
@@ -260,7 +260,7 @@ void Core::OnPresent()
 						ImGui::Text("Localplayer %p", Engine::Get()->GetLocalPlayer());
 						ImGui::Text("PlayerArray %p", playerArray);
 						ImGui::Text("totalPlayers %d", totalPlayers);
-						ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
+						ImGui::Text("ScreenPos %p %f %f %f", mainScreen->pGameScreen->pMainView, mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
 						ImGui::TreePop();
 					}
 					ImGui::Separator();
@@ -277,6 +277,17 @@ void Core::OnPresent()
 					FeatureManager::Get()->OnMenuMainWindow();
 					ImGui::Separator();
 					ImGui::Checkbox("Skip localplayer", &skipLocalplayer);
+					ImGui::Separator();
+					ImGui::Separator();
+					if(ImGui::Button("Save Config"))
+					{
+						FeatureManager::Get()->SaveConfig();
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Load Config"))
+					{
+						FeatureManager::Get()->LoadConfig();
+					}
 				}
 			}
 			__finally

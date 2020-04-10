@@ -9,6 +9,8 @@ class Feature
 protected:
 	bool enabled = true;
 public:
+	virtual void LoadConfig();
+	virtual void SaveConfig();
 	virtual void OnInitialise();
 	virtual void OnGameStart();
 	virtual void OnTurn();

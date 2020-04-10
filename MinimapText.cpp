@@ -11,6 +11,8 @@
 
 #include <map>
 
+#include "Config.h"
+
 #pragma warning( disable : 4244 )
 
 MidfunctionHook minimapHook;
@@ -72,6 +74,28 @@ void __fastcall minimapProxy(Registers* registers)
 		newName += " Pop: " + populationString;
 	}
 	MidfunctionHook::OverwriteRegister(registers->rsp, Register::RDI, (int64_t)newName.c_str());
+}
+
+void MinimapText::LoadConfig()
+{
+	Config* config = Config::Get();
+	*hookEnabled = config->ReadInt("MinimapText", "hookEnabled");
+	displayWood = config->ReadInt("MinimapText", "displayWood");
+	displayFood = config->ReadInt("MinimapText", "displayFood");
+	displayGold = config->ReadInt("MinimapText", "displayGold");
+	displayStone = config->ReadInt("MinimapText", "displayStone");
+	displayPopulation = config->ReadInt("MinimapText", "displayPopulation");
+}
+
+void MinimapText::SaveConfig()
+{
+	Config* config = Config::Get();
+	config->Write<int>("MinimapText", "hookEnabled", *hookEnabled);
+	config->Write<int>("MinimapText", "displayWood", displayWood);
+	config->Write<int>("MinimapText", "displayFood", displayFood);
+	config->Write<int>("MinimapText", "displayGold", displayGold);
+	config->Write<int>("MinimapText", "displayStone", displayStone);
+	config->Write<int>("MinimapText", "displayPopulation", displayPopulation);
 }
 
 void MinimapText::OnInitialise()
