@@ -198,9 +198,12 @@
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
     <ClCompile Include="CastleManager.cpp">
+<<<<<<< HEAD
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
     <ClCompile Include="OneVsOne.cpp">
+=======
+>>>>>>> 48592baf82f27cd569305eca95a5e4b798b82cc7
       <Filter>Source Files\Feature</Filter>
     </ClCompile>
     <ClCompile Include="Config.cpp">
