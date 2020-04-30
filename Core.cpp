@@ -24,6 +24,8 @@
 #include "Debug.h"
 //#include "PauseManager.h"
 
+#include "Offsets.h"
+
 MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();
 MidfunctionHook onCreateUnitHook = MidfunctionHook();
@@ -79,16 +81,14 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 
 Core::Core()
 {
-	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xba276a, (BYTE*)OnGameStartHook, 15);
-	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0x7463b, (BYTE*)OnTurnHook, 14);
-	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xdce840, (BYTE*)OnCreateUnitHook, 15);
+	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();
 
 	//Register Features here
 	featureManager->RegisterFeature(new ResourceInformation());
 	featureManager->RegisterFeature(new ESP());
-	featureManager->RegisterFeature(new MinimapText());
+	//featureManager->RegisterFeature(new MinimapText());
 	featureManager->RegisterFeature(new RelicManager());
 	featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
 	//featureManager->RegisterFeature(new PauseManager());
@@ -259,7 +259,8 @@ void Core::OnPresent()
 						ImGui::Text("Map %p tilesize %d", world->pMap, world->pMap->GetTileSize());
 						ImGui::Text("Localplayer %p", Engine::Get()->GetLocalPlayer());
 						ImGui::Text("PlayerArray %p", playerArray);
-						ImGui::Text("totalPlayers %d", totalPlayers);
+						ImGui::Text("TotalPlayers %d", Engine::Get()->GetTotalPlayers());
+						
 						ImGui::Text("ScreenPos %p %f %f %f", mainScreen->pGameScreen->pMainView, mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
 						ImGui::TreePop();
 					}

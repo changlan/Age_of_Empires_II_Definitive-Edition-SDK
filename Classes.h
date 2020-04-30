@@ -176,9 +176,9 @@ public:
 	char pad_0x0160[0x18]; //0x0160
 	float xScreenPos; //0x0178 
 	float yScreenPos; //0x017C 
-	char pad_0x0180[0x9218]; //0x0180
-	char* name; //0x9398 
-
+	char pad_0x0180[0x9220]; //0x0180
+	char* name; //0x93A0
+	
 	void SetCameraPosition(Vector2 pos)
 	{
 		xScreenPos = pos.x;
@@ -309,7 +309,8 @@ public:
 	//When moving sadly height isnt set. When attack it works.
 	Vector3* GetTargetPosition()
 	{
-		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x278);
+		//TODO action maybe wrong
+		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x280);
 		if (!actionList){return NULL;}
 		uint64_t targetDataWrapper = *reinterpret_cast<uint64_t*>(actionList + 0x10);
 		if (!targetDataWrapper) { return NULL; }

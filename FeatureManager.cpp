@@ -31,7 +31,8 @@ void FeatureManager::LoadConfig()
 {
 	for (Feature* feature : features)
 	{
-		feature->LoadConfig();
+		//TODO enable again.
+		//feature->LoadConfig();
 	}
 }
 

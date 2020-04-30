@@ -9,7 +9,7 @@
 class Unit;
 class Core
 {
-    bool skipLocalplayer = true;
+    bool skipLocalplayer = false;
 public:
     Core();
     void OnPresent();

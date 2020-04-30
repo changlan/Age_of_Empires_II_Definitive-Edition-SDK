@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Feature.h"
 
 class OneVsOne : public Feature

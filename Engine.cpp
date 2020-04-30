@@ -44,7 +44,12 @@ MainScreen* Engine::GetMainScreen() const
 
 int Engine::GetTotalPlayers() const
 {
-	return *reinterpret_cast<int32_t*>(base + Offsets::totalPlayers);
+	World* world = GetWorld();
+	if (!world)
+	{
+		return 0;
+	}
+	return (*(int64_t*)((int64_t)world + 0x2a8) - *(int64_t*)((int64_t)world + 0x2a0)) / 0x10;
 }
 
 PlayerArray* Engine::GetPlayerArray() const

@@ -12,7 +12,7 @@ namespace Offsets
 	extern int64_t tribePanelInven;
 	extern int64_t tribePanelInven_localPlayer;
 
-	extern int64_t unit_actionlist ;
+	//extern int64_t unit_actionlist ;
 	
 	extern int64_t minimapHookOffset;
 
@@ -21,4 +21,5 @@ namespace Offsets
 	extern int64_t printBottomText;
 	extern int64_t pauseGame;
 	extern int64_t sendChat;
+	extern int64_t createUnitHook;
 }
