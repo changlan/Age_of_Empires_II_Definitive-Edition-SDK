@@ -32,5 +32,5 @@ void Debug::OnShutdown()
 
 void Debug::OnUnitCreated(Unit* unit)
 {
-	printf("Created %s\n", unit->pUnitData->name);
+	//printf("Created %s\n", unit->pUnitData->name);
 }

@@ -88,7 +88,7 @@ Core::Core()
 	//Register Features here
 	featureManager->RegisterFeature(new ResourceInformation());
 	featureManager->RegisterFeature(new ESP());
-	//featureManager->RegisterFeature(new MinimapText());
+	featureManager->RegisterFeature(new MinimapText());
 	featureManager->RegisterFeature(new RelicManager());
 	featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
 	//featureManager->RegisterFeature(new PauseManager());
@@ -221,7 +221,7 @@ void Core::OnPresent()
 			}
 		}
 
-		for (int i = 1; i <= totalPlayers; i++)
+		for (int i = 1; i < totalPlayers; i++)
 		{
 			Player* player = playerArray->playerData[i].player;
 			if (!player)
@@ -266,7 +266,7 @@ void Core::OnPresent()
 					}
 					ImGui::Separator();
 					ImGui::Text("Player Information");
-					for (int i = 0; i <= totalPlayers; i++)
+					for (int i = 0; i < totalPlayers; i++)
 					{
 						Player* currentPlayer = playerArray->playerData[i].player;
 						if (skipLocalplayer && currentPlayer == Engine::Get()->GetLocalPlayer())
@@ -275,6 +275,8 @@ void Core::OnPresent()
 						}
 						createPlayerTreeNode(currentPlayer, i);
 					}
+					ImGui::Separator();
+					ImGui::Text("Test1");
 					FeatureManager::Get()->OnMenuMainWindow();
 					ImGui::Separator();
 					ImGui::Checkbox("Skip localplayer", &skipLocalplayer);

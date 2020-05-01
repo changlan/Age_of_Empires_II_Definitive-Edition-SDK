@@ -21,10 +21,6 @@ namespace Offsets
 	//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 3B 47 18 0F		//1
 	int64_t pAVGame = 0x2941e70;
 
-	//not updated
-	//48 8B 8B ? ? ? ? E8 ? ? ? ? 48 85 FF
-	//int64_t unit_actionlist = 0x278;
-
 	//MinimapText 88 85 ? ? ? ? 41 8B 46 0C
 	int64_t minimapHookOffset = 0xc10269;
 
