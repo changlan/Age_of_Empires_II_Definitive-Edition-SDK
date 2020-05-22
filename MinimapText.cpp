@@ -46,7 +46,7 @@ void __fastcall minimapProxy(Registers* registers)
 		return;
 	}
 
-	std::string woodString = std::to_string((player->pResources->wood));
+	std::string woodString = std::to_string(((int)player->pResources->wood));
 	std::string foodString = std::to_string((int)player->pResources->food);
 	std::string goldString = std::to_string((int)player->pResources->gold);
 	std::string stoneString = std::to_string((int)player->pResources->stone);
