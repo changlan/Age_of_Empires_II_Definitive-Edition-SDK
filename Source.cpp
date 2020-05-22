@@ -136,7 +136,7 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		//nrasterizer_desc.CullMode = D3D11_CULL_BACK; //flickering
 		nrasterizer_desc.CullMode = D3D11_CULL_NONE;
 		nrasterizer_desc.FrontCounterClockwise = false;
-		nrasterizer_desc.DepthBias = 0.0f;
+		nrasterizer_desc.DepthBias = 0;
 		nrasterizer_desc.SlopeScaledDepthBias = 0.0f;
 		nrasterizer_desc.DepthBiasClamp = 0.0f;
 		nrasterizer_desc.DepthClipEnable = true;

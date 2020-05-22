@@ -80,9 +80,9 @@ void ESP::DrawBox(Vector3 position, Vector2 edgeSize, int32_t color)
 	Renderer::Get()->RenderRect(ivOne, ivFour, ivTwo, ivThree, color);
 }
 
-void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, int thickness = 1, bool drawName = false)
+void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, float thickness = 1.f, bool drawName = false)
 {
-	static const float PI = 3.14159265358979323846;
+	static const float PI = 3.14159265358979323846f;
 	int32_t tileSize = Engine::Get()->GetWorld()->pMap->GetTileSize();
 	Vector3 center = unit->position;
 
@@ -97,7 +97,7 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 		Vector2 screenPos = Engine::Get()->worldToScreen(Vector3(x, y, center.z));
 		screeenPoints.push_back(ImVec2(screenPos.x, screenPos.y));
 	}
-	for (int i = 1; i < screeenPoints.size(); i++)
+	for (size_t i = 1; i < screeenPoints.size(); i++)
 	{
 		Renderer::Get()->RenderLine(screeenPoints[i], screeenPoints[i - 1], color, thickness);
 	}

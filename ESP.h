@@ -17,7 +17,7 @@ class ESP : public Feature
 	bool playerUnitNameEsp[8] = { false,false,false,false,false,false,false,false };
 	//bool playerBuildingEsp[8] = { false,true,true,true,true,true,true,true };
 	//bool playerBuildingNameEsp[8] = { false,true,true,true,true,true,true,true };
-	float colors[8][3];
+	float colors[8][3] = { 0 };
 	static uint32_t colors_hex[8];
 
 	//Callbacks
@@ -31,5 +31,5 @@ class ESP : public Feature
 	void DrawBox(Unit* unit, int32_t color, bool drawName);
 	void DrawBox(Vector3 position, Vector2 edgeSize, int32_t color);
 
-	void DrawCircle(Unit* unit, int radius, int32_t color, int smoothness , int thickness, bool drawName);
+	void DrawCircle(Unit* unit, int radius, int32_t color, int smoothness , float thickness, bool drawName);
 };

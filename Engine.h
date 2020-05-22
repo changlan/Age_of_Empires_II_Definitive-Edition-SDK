@@ -29,7 +29,7 @@ public:
 
 	Game* GetGame() const;
 	MainScreen* GetMainScreen() const;
-	int GetTotalPlayers() const;
+	int64_t GetTotalPlayers() const;
 	PlayerArray* GetPlayerArray() const;
 
 	Vector2 worldToScreen(Vector3 position) const;
