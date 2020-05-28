@@ -49,7 +49,7 @@ int Engine::GetTotalPlayers() const
 	{
 		return 0;
 	}
-	return (*(int64_t*)((int64_t)world + 0x2a8) - *(int64_t*)((int64_t)world + 0x2a0)) / 0x10;
+	return (*(int64_t*)((int64_t)world + 0x2b0) - *(int64_t*)((int64_t)world + 0x2a8)) / 0x10;
 }
 
 PlayerArray* Engine::GetPlayerArray() const

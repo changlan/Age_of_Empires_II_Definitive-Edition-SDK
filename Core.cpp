@@ -276,7 +276,6 @@ void Core::OnPresent()
 						createPlayerTreeNode(currentPlayer, i);
 					}
 					ImGui::Separator();
-					ImGui::Text("Test1");
 					FeatureManager::Get()->OnMenuMainWindow();
 					ImGui::Separator();
 					ImGui::Checkbox("Skip localplayer", &skipLocalplayer);
