@@ -6,14 +6,32 @@
 #include "Engine.h"
 #include "SDK.h"
 #include "Renderer.h"
+#include "Config.h"
 
 bool warningEnabled = true;
-bool warnTeam = false;
-bool warnAll = false;
 int notification = 0;
 
 ThreadSafeQueue<std::string> teamMessages;
 ThreadSafeQueue<std::string> allMessages;
+
+void CastleManager::LoadConfig()
+{
+	Config* config = Config::Get();
+	notification = config->ReadInt("CastleManager", "notification");
+	warningEnabled = config->ReadInt("CastleManager", "warningEnabled");
+}
+
+void CastleManager::SaveConfig()
+{
+	Config* config = Config::Get();
+	config->Write<int>("CastleManager", "warningEnabled", warningEnabled);
+	config->Write<int>("CastleManager", "notification", notification);
+}
+
+void CastleManager::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
+{
+	
+}
 
 void CastleManager::OnUnitCreated(Unit* unit)
 {
@@ -76,4 +94,20 @@ void CastleManager::OnMenuMainWindow()
 	ImGui::SameLine();
 	ImGui::RadioButton("All", &notification, 2);
 	ImGui::Separator();
+}
+
+void CastleManager::OnDraw()
+{
+	/*if (strcmp("CSTL", unit->pUnitData->name) == 0)
+	{
+		Vector2 screenPos = Engine::Get()->worldToScreen(unit->position);
+		int screenResX = Engine::Get()->GetMainScreen()->pGameScreen->ScreenResX;
+		int screenResY = Engine::Get()->GetMainScreen()->pGameScreen->ScreenResY;
+		Renderer::Get()->RenderLine(ImVec2(screenResX / 2, screenResY / 2), ImVec2(screenPos.x, screenPos.y), 0xffffffff, 2);
+	}*/
+}
+
+void CastleManager::OnPlayerIteration(Player* player, int playerIndex)
+{
+	
 }

@@ -1,5 +1,15 @@
 #include "Feature.h"
 
+void Feature::LoadConfig()
+{
+	
+}
+
+void Feature::SaveConfig()
+{
+	
+}
+
 void Feature::OnInitialise()
 {
 

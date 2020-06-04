@@ -42,9 +42,14 @@ MainScreen* Engine::GetMainScreen() const
 	return reinterpret_cast<MainScreen*>(base + Offsets::mainScreen);
 }
 
-int Engine::GetTotalPlayers() const
+int64_t Engine::GetTotalPlayers() const
 {
-	return *reinterpret_cast<int32_t*>(base + Offsets::totalPlayers);
+	World* world = GetWorld();
+	if (!world)
+	{
+		return 0;
+	}
+	return (*(int64_t*)((int64_t)world + Offsets::playerArrayStart + 0x8) - *(int64_t*)((int64_t)world + Offsets::playerArrayStart)) / 0x10;
 }
 
 PlayerArray* Engine::GetPlayerArray() const
@@ -68,8 +73,8 @@ Vector2 Engine::worldToScreen(Vector3 position) const
 {
 	MainScreen* mainScreen = GetMainScreen();
 	static int tileSize = GetWorld()->pMap->GetTileSize();
-	int tile_width = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
-	int tile_height = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
+	float tile_width = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
+	float tile_height = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
 	
 	float xDelta = position.x - mainScreen->pGameScreen->pMainView->ScreenPosX ;
 	float yDelta = position.y - mainScreen->pGameScreen->pMainView->ScreenPosY;
@@ -128,26 +133,55 @@ ImVec4 Engine::GetPlayerColorImGUI(int colorIndex) const
 	return color;
 }
 
-Player* Engine::GetPlayerByName(char* playerName) const
+Player* Engine::GetPlayer(int index) const
 {
+	const int64_t totalPlayers = GetTotalPlayers();
+	if (index > totalPlayers)
+	{
+		return nullptr;
+	}
+	
 	MainScreen* mainScreen = GetMainScreen();
 	if (!mainScreen)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	World* main = GetWorld();
 	if (!main)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	PlayerArray* playerArray = main->pPlayerArray;
 	if (!playerArray)
 	{
-		return NULL;
+		return nullptr;
 	}
-	int totalPlayers = GetTotalPlayers();
+	
+	return playerArray->playerData[index].player;
+}
+
+Player* Engine::GetPlayerByName(char* playerName) const
+{
+	MainScreen* mainScreen = GetMainScreen();
+	if (!mainScreen)
+	{
+		return nullptr;
+	}
+
+	World* main = GetWorld();
+	if (!main)
+	{
+		return nullptr;
+	}
+
+	PlayerArray* playerArray = main->pPlayerArray;
+	if (!playerArray)
+	{
+		return nullptr;
+	}
+	int64_t totalPlayers = GetTotalPlayers();
 
 	for (int i = 0; i <= totalPlayers; i++)
 	{
@@ -161,7 +195,7 @@ Player* Engine::GetPlayerByName(char* playerName) const
 			return player;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 Player* Engine::GetLocalPlayer() const
@@ -214,4 +248,13 @@ void Engine::PrintBottomNotification(const char* message, unsigned int hexcolor)
 	typedef void(__fastcall* tPrintBottomText) (GameScreen* AVGameScreen, const char* message, unsigned int hexcolor, int64_t unused);
 	static tPrintBottomText fPrintBottomText = (tPrintBottomText)(base + Offsets::printBottomText);
 	fPrintBottomText(GetMainScreen()->pGameScreen, message, hexcolor, 0xffffffffffffffff); //Color format: RBGA
+}
+
+int64_t Engine::Flare(float xPos, float yPos) const
+{
+	typedef __int64(__fastcall* tCreateFlare) (Player* player, __int64 hundert12, __int64 zero1, __int64 zero2, float xPos, float yPos, int64_t zero3, int64_t zero4);
+	static tCreateFlare fCreateFlare = (tCreateFlare)(base + 0xc31270);
+	
+	return fCreateFlare(GetLocalPlayer(), 0x112, 0, 0, 220.f, 220.f, 0, 0);
+	//__usercall fhsCreateFlare_MAYBE_7FF718CF1270@<rax>( __int64 a3_zero@<r8>, __int64 a4_zero@<r9>, float xPos@<xmm2>, float yPos@<xmm3>, __int64 a5_zero, int a6_Zero)
 }

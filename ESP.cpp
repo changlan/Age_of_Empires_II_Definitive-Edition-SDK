@@ -6,6 +6,8 @@
 #include <map>
 #include <math.h>
 
+#include "Config.h"
+
 uint32_t ESP::colors_hex[8] = { 0xff0000ff, 0xffff0000,0xff00ff00,0xffffff00,0xff00ffff,0xffff00ff,0xffffffff,0xffffb400 };
 
 void ESP::DrawBox(Unit* unit, int32_t color, bool drawName = false)
@@ -78,9 +80,9 @@ void ESP::DrawBox(Vector3 position, Vector2 edgeSize, int32_t color)
 	Renderer::Get()->RenderRect(ivOne, ivFour, ivTwo, ivThree, color);
 }
 
-void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, int thickness = 1, bool drawName = false)
+void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, float thickness = 1.f, bool drawName = false)
 {
-	static const float PI = 3.14159265358979323846;
+	static const float PI = 3.14159265358979323846f;
 	int32_t tileSize = Engine::Get()->GetWorld()->pMap->GetTileSize();
 	Vector3 center = unit->position;
 
@@ -95,7 +97,7 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 		Vector2 screenPos = Engine::Get()->worldToScreen(Vector3(x, y, center.z));
 		screeenPoints.push_back(ImVec2(screenPos.x, screenPos.y));
 	}
-	for (int i = 1; i < screeenPoints.size(); i++)
+	for (size_t i = 1; i < screeenPoints.size(); i++)
 	{
 		Renderer::Get()->RenderLine(screeenPoints[i], screeenPoints[i - 1], color, thickness);
 	}
@@ -107,6 +109,27 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 		Renderer::Get()->RenderText(unit->pUnitData->name, ivTextPos, 16, color, false);
 	}
 }
+
+void ESP::LoadConfig()
+{
+	Config* config = Config::Get();
+	siegeImpactLocation = config->ReadInt("ESP", "siegeImpactLocation");
+	trebuchetESP = config->ReadInt("ESP", "trebuchetESP");
+	gaiaESP = config->ReadInt("ESP", "gaiaESP");
+	goldESP = config->ReadInt("ESP", "goldESP");
+	stoneESP = config->ReadInt("ESP", "stoneESP");	
+}
+
+void ESP::SaveConfig()
+{
+	Config* config = Config::Get();
+	config->Write<int>("ESP", "siegeImpactLocation", siegeImpactLocation);
+	config->Write<int>("ESP", "trebuchetESP", trebuchetESP);
+	config->Write<int>("ESP", "gaiaESP", gaiaESP);
+	config->Write<int>("ESP", "goldESP", goldESP);
+	config->Write<int>("ESP", "stoneESP", stoneESP);
+}
+
 
 void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 {
@@ -194,7 +217,7 @@ void ESP::OnMenuPlayerTreenode(Player* player, int playerIndex)
 
 void ESP::OnNeutralUnit(Unit* unit)
 {
-	if (gaiaEsp || goldESP || stoneESP)
+	if (gaiaESP || goldESP || stoneESP)
 	{
 		std::string unitName = unit->pUnitData->name;
 		Vector2 screenPos = Engine::Get()->worldToScreen(unit);
@@ -215,7 +238,7 @@ void ESP::OnNeutralUnit(Unit* unit)
 			return;
 		}
 
-		if (!gaiaEsp)
+		if (!gaiaESP)
 		{
 			return;
 		}
@@ -296,7 +319,7 @@ void ESP::OnMenuMainWindow()
 	ImGui::Checkbox("Trebuchet range", &trebuchetESP);
 	ImGui::Separator();
 	ImGui::Text("Resource ESP");
-	ImGui::Checkbox("Gaia##ESP", &gaiaEsp);
+	ImGui::Checkbox("Gaia##ESP", &gaiaESP);
 	ImGui::SameLine();
 	ImGui::Checkbox("Gold##ESP", &goldESP);
 	ImGui::SameLine();

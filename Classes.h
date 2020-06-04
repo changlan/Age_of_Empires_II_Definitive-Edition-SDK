@@ -176,9 +176,9 @@ public:
 	char pad_0x0160[0x18]; //0x0160
 	float xScreenPos; //0x0178 
 	float yScreenPos; //0x017C 
-	char pad_0x0180[0x9218]; //0x0180
-	char* name; //0x9398 
-
+	char pad_0x0180[0x9210]; //0x0170
+	char* name; //0x9390
+	
 	void SetCameraPosition(Vector2 pos)
 	{
 		xScreenPos = pos.x;
@@ -203,8 +203,8 @@ public:
 	char pad_0x00A8[0xB0]; //0x00A8
 	float camX; //0x0158 
 	float camY; //0x015C 
-	char pad_0x0160[0x140]; //0x0160
-	PlayerArray* pPlayerArray; //0x02A0 
+	char pad_0x0160[0x148]; //0x0168
+	PlayerArray* pPlayerArray; //0x02A8 
 
 }; //Size=0x02A8
 
@@ -309,7 +309,7 @@ public:
 	//When moving sadly height isnt set. When attack it works.
 	Vector3* GetTargetPosition()
 	{
-		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x278);
+		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x288);
 		if (!actionList){return NULL;}
 		uint64_t targetDataWrapper = *reinterpret_cast<uint64_t*>(actionList + 0x10);
 		if (!targetDataWrapper) { return NULL; }
@@ -322,7 +322,7 @@ public:
 	typedef char(__fastcall* fhsMoveToCaller)(Unit* unit, Unit* targetUnit, World* world, int64_t zero, float xPos, float yPos, int zero2);
 	void MoveTo(World* world, float xPos, float yPos)
 	{
-		static fhsMoveToCaller moveUnitCaller = (fhsMoveToCaller)((int64_t)GetModuleHandle(NULL) + 0xc863a0);
+		static fhsMoveToCaller moveUnitCaller = (fhsMoveToCaller)((int64_t)GetModuleHandle(NULL) + 0xc863a0); //outdated and desync
 		moveUnitCaller(this, 0, world, 0, xPos, yPos, 0);
 	}
 

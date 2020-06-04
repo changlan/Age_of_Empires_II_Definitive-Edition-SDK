@@ -44,7 +44,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
     <InterproceduralOptimization>false</InterproceduralOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -106,6 +106,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;AoE_imgui_DE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,6 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;AoE_imgui_DE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="CastleManager.h" />
     <ClInclude Include="Classes.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="CustomLoadingScreen.h" />
     <ClInclude Include="Debug.h" />
@@ -164,12 +167,14 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="InitialiseOffsets.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MidfunctionHook.h" />
     <ClInclude Include="MinimapText.h" />
     <ClInclude Include="Offsets.h" />
+    <ClInclude Include="OneVsOne.h" />
     <ClInclude Include="Patcher.h" />
-    <ClInclude Include="PauseManager.h" />
+    <ClInclude Include="Pattern.h" />
     <ClInclude Include="RelicManager.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceInformation.h" />
@@ -180,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CastleManager.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="CustomLoadingScreen.cpp" />
     <ClCompile Include="Debug.cpp" />
@@ -193,11 +199,13 @@
     <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="InitialiseOffsets.cpp" />
     <ClCompile Include="MidfunctionHook.cpp" />
     <ClCompile Include="MinimapText.cpp" />
     <ClCompile Include="Offsets.cpp" />
+    <ClCompile Include="OneVsOne.cpp" />
     <ClCompile Include="Patcher.cpp" />
-    <ClCompile Include="PauseManager.cpp" />
+    <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="RelicManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceInformation.cpp" />

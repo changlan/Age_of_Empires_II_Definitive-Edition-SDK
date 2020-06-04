@@ -10,7 +10,7 @@ void RelicManager::OnNeutralUnit(Unit* unit)
 
 void RelicManager::OnMenuMainWindow()
 {
-	if (true) //TODO Need OnGameStart()
+	if (true)
 	{
 		relics.clear();
 		Player* gaia = Engine::Get()->GetPlayerByName("Gaia");

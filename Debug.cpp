@@ -11,15 +11,16 @@ void Debug::OnInitialise()
 }
 void Debug::OnMenuMainWindow()
 {
+	int idleUnits = 0;
+
+	PlayerArray* playerArray = Engine::Get()->GetPlayerArray();
+	
 	ImGui::Separator();
 	ImGui::Text("Debug");
-	if (ImGui::Button("SendChat"))
+	//ImGui::Text("Idle: %d", idleUnit);
+	if (ImGui::Button("Flare"))
 	{
-		Engine::Get()->SendChat("Testmessage", true);
-	}
-	if (ImGui::Button("SendChat2"))
-	{
-		Engine::Get()->SendChat("Testmessage2", false);
+		Engine::Get()->Flare(100.f, 100.f);
 	}
 	ImGui::Separator();
 }
@@ -31,5 +32,5 @@ void Debug::OnShutdown()
 
 void Debug::OnUnitCreated(Unit* unit)
 {
-	printf("Created %s\n", unit->pUnitData->name);
+	//printf("Created %s\n", unit->pUnitData->name);
 }

@@ -22,7 +22,10 @@
 #include "RelicManager.h"
 #include "CustomLoadingScreen.h"
 #include "Debug.h"
-#include "PauseManager.h"
+//#include "PauseManager.h"
+#include "InitialiseOffsets.h"
+
+#include "Offsets.h"
 
 MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();
@@ -46,7 +49,7 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 	__try
 	{
 		const auto objectManager = reinterpret_cast<ObjectManager*>(registers->rcx);
-		const int totalPlayers = Engine::Get()->GetTotalPlayers();
+		const int64_t totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		bool foundArray = false;
 		PlayerArray* playerArray = Engine::Get()->GetPlayerArray();
@@ -79,11 +82,10 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 
 Core::Core()
 {
-	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xba276a, (BYTE*)OnGameStartHook, 15);
-	//onGameStartHook.Hook((BYTE*)GetModuleHandle(NULL) + 0x7463b, (BYTE*)OnTurnHook, 14);
-	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + 0xdce840, (BYTE*)OnCreateUnitHook, 15);
+	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();
+	featureManager->RegisterFeature(new InitialiseOffsets());
 
 	//Register Features here
 	featureManager->RegisterFeature(new ResourceInformation());
@@ -199,7 +201,7 @@ void Core::OnPresent()
 			return;
 		}
 		//printf(" playerArray %p", playerArray);
-		int totalPlayers = Engine::Get()->GetTotalPlayers();
+		int64_t totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		static bool openOverlay = true;
 		if (GetAsyncKeyState(VK_INSERT) & 1) { openOverlay = !openOverlay; }
@@ -221,7 +223,7 @@ void Core::OnPresent()
 			}
 		}
 
-		for (int i = 1; i <= totalPlayers; i++)
+		for (int i = 1; i < totalPlayers; i++)
 		{
 			Player* player = playerArray->playerData[i].player;
 			if (!player)
@@ -259,13 +261,14 @@ void Core::OnPresent()
 						ImGui::Text("Map %p tilesize %d", world->pMap, world->pMap->GetTileSize());
 						ImGui::Text("Localplayer %p", Engine::Get()->GetLocalPlayer());
 						ImGui::Text("PlayerArray %p", playerArray);
-						ImGui::Text("totalPlayers %d", totalPlayers);
-						ImGui::Text("ScreenPos %f %f %f", mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
+						ImGui::Text("TotalPlayers %d", Engine::Get()->GetTotalPlayers());
+						
+						ImGui::Text("ScreenPos %p %f %f %f", mainScreen->pGameScreen->pMainView, mainScreen->pGameScreen->pMainView->ScreenPosX, mainScreen->pGameScreen->pMainView->ScreenPosY, mainScreen->pGameScreen->pMainView->ScreenPosZ);
 						ImGui::TreePop();
 					}
 					ImGui::Separator();
 					ImGui::Text("Player Information");
-					for (int i = 0; i <= totalPlayers; i++)
+					for (int i = 0; i < totalPlayers; i++)
 					{
 						Player* currentPlayer = playerArray->playerData[i].player;
 						if (skipLocalplayer && currentPlayer == Engine::Get()->GetLocalPlayer())
@@ -274,9 +277,21 @@ void Core::OnPresent()
 						}
 						createPlayerTreeNode(currentPlayer, i);
 					}
+					ImGui::Separator();
 					FeatureManager::Get()->OnMenuMainWindow();
 					ImGui::Separator();
 					ImGui::Checkbox("Skip localplayer", &skipLocalplayer);
+					ImGui::Separator();
+					ImGui::Separator();
+					if(ImGui::Button("Save Config"))
+					{
+						FeatureManager::Get()->SaveConfig();
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Load Config"))
+					{
+						FeatureManager::Get()->LoadConfig();
+					}
 				}
 			}
 			__finally

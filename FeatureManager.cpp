@@ -27,6 +27,22 @@ void FeatureManager::RegisterFeature(Feature* feature)
 	features.push_back(feature);
 }
 
+void FeatureManager::LoadConfig()
+{
+	for (Feature* feature : features)
+	{
+		feature->LoadConfig();
+	}
+}
+
+void FeatureManager::SaveConfig()
+{
+	for (Feature* feature : features)
+	{
+		feature->SaveConfig();
+	}
+}
+
 void FeatureManager::OnInitialise()
 {
 	for (Feature* feature : features)
