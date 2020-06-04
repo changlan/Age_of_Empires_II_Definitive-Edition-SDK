@@ -3,7 +3,7 @@
 #include "Sdk.h"
 #include "Renderer.h"
 #include "Engine.h"
-#include <map>
+
 #include <math.h>
 
 #include "Config.h"
@@ -82,7 +82,7 @@ void ESP::DrawBox(Vector3 position, Vector2 edgeSize, int32_t color)
 
 void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, float thickness = 1.f, bool drawName = false)
 {
-	static const float PI = 3.14159265358979323846f;
+	static const float PI = 3.14159265358979323846;
 	int32_t tileSize = Engine::Get()->GetWorld()->pMap->GetTileSize();
 	Vector3 center = unit->position;
 
@@ -97,7 +97,7 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 		Vector2 screenPos = Engine::Get()->worldToScreen(Vector3(x, y, center.z));
 		screeenPoints.push_back(ImVec2(screenPos.x, screenPos.y));
 	}
-	for (size_t i = 1; i < screeenPoints.size(); i++)
+	for (int i = 1; i < screeenPoints.size(); i++)
 	{
 		Renderer::Get()->RenderLine(screeenPoints[i], screeenPoints[i - 1], color, thickness);
 	}
@@ -243,72 +243,48 @@ void ESP::OnNeutralUnit(Unit* unit)
 			return;
 		}
 
-		typedef void (ESP::* fPtr)(Vector2&, std::string&);
-		typedef std::map<std::vector<std::string>, fPtr> Actions;
-		Actions link;
 
-		std::vector<std::string>  valuesFish = { "FISHS", "FISHX","FISH1","FISH2","FISH3","FISH4","turtles" };
-		std::vector<std::string>  valuesHeavyFood = { "BOARX", "RHINO","BOAR","BOARJ","WELEF" };
-		std::vector<std::string>  valuesLighthuntable = { "DEERX", "IBEX","ZEBRA","OSTRICH" };
-		std::vector<std::string>  valuesLightFood = { "SHEEPG", "GOOSE","PIG", "LLAMAG", "Cow Black", "Cow Brown", "Cow Black and White", "BUFFALO", "TURKYG", "GOAT" };
-		std::vector<std::string>  valuesDangerousAnimal = { "WOLFX", "KOMODO","GJAGR", "SLEOPA", "BEAR", "CROCO", "LION", "TIGER" };
-		std::vector<std::string>  valuesRelic = { "RELIC" };
-
-		void (ESP:: * RenderStyleAction)(Vector2&, std::string&);
-
-		link.emplace(valuesFish, &ESP::RenderStyleFish);
-		link.emplace(valuesHeavyFood, &ESP::RenderStyleHeavyFood);
-		link.emplace(valuesLighthuntable, &ESP::RenderStyleLighHuntable);
-		link.emplace(valuesLightFood, &ESP::RenderStyleLightFood);
-		link.emplace(valuesDangerousAnimal, &ESP::RenderStyleDangerousAnimal);
-		link.emplace(valuesRelic, &ESP::RenderStyleRelic);
-
-		for (std::pair<std::vector<std::string>, fPtr> element : link)
+		if (std::find(namesFish.begin(), namesFish.end(), unitName) != namesFish.end())
 		{
-			if (std::find(element.first.begin(), element.first.end(), unitName) != element.first.end())
-			{
-				RenderStyleAction = element.second;
-			}
+			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x400000ff);
+			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
+			return;
 		}
 
-		(this->*RenderStyleAction)(screenPos, unitName);
+		if (std::find(namesHeavyFood.begin(), namesHeavyFood.end(), unitName) != namesHeavyFood.end())
+		{
+			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ff00);
+			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
+			return;
+		}
+
+		if (std::find(namesLighthuntable.begin(), namesLighthuntable.end(), unitName) != namesLighthuntable.end())
+		{
+			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ffff);
+			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
+			return;
+		}
+
+		if (std::find(namesLightFood.begin(), namesLightFood.end(), unitName) != namesLightFood.end())
+		{
+			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x400000ff);
+			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
+			return;
+		}
+
+		if (std::find(namesDangerousAnimal.begin(), namesDangerousAnimal.end(), unitName) != namesDangerousAnimal.end())
+		{
+			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x40ff0000);
+			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
+			return;
+		}
+		
+		if (strcmp(unitName.c_str(), "RELIC") == 0)
+		{
+			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 50, 0x40ffffff);
+			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
+		}
 	}
-}
-
-void ESP::RenderStyleRelic(Vector2& screenPos, std::string& unitName)
-{
-	Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 50, 0x40ffffff);
-	Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
-}
-
-void ESP::RenderStyleDangerousAnimal(Vector2& screenPos, std::string& unitName)
-{
-	Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x40ff0000);
-	Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
-}
-
-void ESP::RenderStyleLighHuntable(Vector2& screenPos, std::string& unitName)
-{
-	Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ffff);
-	Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
-}
-
-void ESP::RenderStyleHeavyFood(Vector2& screenPos, std::string& unitName)
-{
-	Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x4000ff00);
-	Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
-}
-
-void ESP::RenderStyleLightFood(Vector2& screenPos, std::string& unitName)
-{
-	Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x400000ff);
-	Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
-}
-
-void ESP::RenderStyleFish(Vector2& screenPos, std::string& unitName)
-{
-	Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 20, 0x400000ff);
-	Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
 }
 
 void ESP::OnMenuMainWindow()
