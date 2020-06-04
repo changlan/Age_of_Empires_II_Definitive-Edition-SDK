@@ -6,7 +6,7 @@
 
 Renderer* Renderer::_instance = NULL;
 
-Renderer::Renderer()
+Renderer::Renderer() : inFrame(false)
 {
 
 }

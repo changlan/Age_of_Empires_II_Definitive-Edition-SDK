@@ -42,7 +42,7 @@ MainScreen* Engine::GetMainScreen() const
 	return reinterpret_cast<MainScreen*>(base + Offsets::mainScreen);
 }
 
-int Engine::GetTotalPlayers() const
+int64_t Engine::GetTotalPlayers() const
 {
 	World* world = GetWorld();
 	if (!world)
@@ -73,8 +73,8 @@ Vector2 Engine::worldToScreen(Vector3 position) const
 {
 	MainScreen* mainScreen = GetMainScreen();
 	static int tileSize = GetWorld()->pMap->GetTileSize();
-	int tile_width = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
-	int tile_height = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
+	float tile_width = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
+	float tile_height = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
 	
 	float xDelta = position.x - mainScreen->pGameScreen->pMainView->ScreenPosX ;
 	float yDelta = position.y - mainScreen->pGameScreen->pMainView->ScreenPosY;
@@ -135,7 +135,7 @@ ImVec4 Engine::GetPlayerColorImGUI(int colorIndex) const
 
 Player* Engine::GetPlayer(int index) const
 {
-	const int totalPlayers = GetTotalPlayers();
+	const int64_t totalPlayers = GetTotalPlayers();
 	if (index > totalPlayers)
 	{
 		return nullptr;
@@ -181,7 +181,7 @@ Player* Engine::GetPlayerByName(char* playerName) const
 	{
 		return nullptr;
 	}
-	int totalPlayers = GetTotalPlayers();
+	int64_t totalPlayers = GetTotalPlayers();
 
 	for (int i = 0; i <= totalPlayers; i++)
 	{

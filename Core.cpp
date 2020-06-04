@@ -49,7 +49,7 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 	__try
 	{
 		const auto objectManager = reinterpret_cast<ObjectManager*>(registers->rcx);
-		const int totalPlayers = Engine::Get()->GetTotalPlayers();
+		const int64_t totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		bool foundArray = false;
 		PlayerArray* playerArray = Engine::Get()->GetPlayerArray();
@@ -201,7 +201,7 @@ void Core::OnPresent()
 			return;
 		}
 		//printf(" playerArray %p", playerArray);
-		int totalPlayers = Engine::Get()->GetTotalPlayers();
+		int64_t totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		static bool openOverlay = true;
 		if (GetAsyncKeyState(VK_INSERT) & 1) { openOverlay = !openOverlay; }

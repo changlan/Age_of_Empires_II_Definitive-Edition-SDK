@@ -65,7 +65,7 @@ public:
     static void CopyToClipboard(uint64_t addy)
     {
         char szBuffer[2048];
-        sprintf(szBuffer, "0x%llx", addy);
+        sprintf_s(szBuffer, "0x%llx", addy);
         const char* output = szBuffer;
         const size_t len = strlen(output) + 1;
         HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
