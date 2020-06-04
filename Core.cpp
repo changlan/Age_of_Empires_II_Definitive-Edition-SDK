@@ -23,6 +23,7 @@
 #include "CustomLoadingScreen.h"
 #include "Debug.h"
 //#include "PauseManager.h"
+#include "InitialiseOffsets.h"
 
 #include "Offsets.h"
 
@@ -84,6 +85,7 @@ Core::Core()
 	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();
+	featureManager->RegisterFeature(new InitialiseOffsets());
 
 	//Register Features here
 	featureManager->RegisterFeature(new ResourceInformation());

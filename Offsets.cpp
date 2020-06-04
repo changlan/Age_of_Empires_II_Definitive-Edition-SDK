@@ -15,7 +15,7 @@ namespace Offsets
 	//48 8B 83 ? ? ? ? 48 8B 48 70 F3 0F 10					//3
 	int64_t tribePanelInven_localPlayer = 0x208;
 
-	//49 83 BF ? ? ? ? ? 0F 86 ? ? ? ? 48 8B - 0xE
+	//49 83 BF ? ? ? ? ? 0F 86 ? ? ? ? 48 8B + 0xE
 	int64_t pAVGame = 0x2983AD0;
 
 	//MinimapText 88 85 ? ? ? ? 41 8B 46 0C					//2
@@ -31,4 +31,10 @@ namespace Offsets
 	
 	int64_t createUnitHook = 0xE06260;			//48 89 5C 24 ? 48 89 6C 24 ? 57 48 83 EC 20 8B 41		//2
 
+	int64_t playerArrayStart = 0x2a8;
+
+	//Manual Update
+	//CustomLoadingScreen
+	int64_t pathToLoadScreen = 0x1E72D20;		// /resources/loading_slash.png
+	int64_t loadPathToLoadScreen = 0xEEA8EE;	// x-ref /resources/loading_slash.png
 }

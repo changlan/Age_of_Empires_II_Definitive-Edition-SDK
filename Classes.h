@@ -322,7 +322,7 @@ public:
 	typedef char(__fastcall* fhsMoveToCaller)(Unit* unit, Unit* targetUnit, World* world, int64_t zero, float xPos, float yPos, int zero2);
 	void MoveTo(World* world, float xPos, float yPos)
 	{
-		static fhsMoveToCaller moveUnitCaller = (fhsMoveToCaller)((int64_t)GetModuleHandle(NULL) + 0xc863a0);
+		static fhsMoveToCaller moveUnitCaller = (fhsMoveToCaller)((int64_t)GetModuleHandle(NULL) + 0xc863a0); //outdated and desync
 		moveUnitCaller(this, 0, world, 0, xPos, yPos, 0);
 	}
 
