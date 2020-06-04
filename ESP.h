@@ -1,5 +1,6 @@
 #pragma once
 #include "Feature.h"
+#include <string>
 
 struct Vector2;
 struct Vector3;
@@ -30,6 +31,14 @@ class ESP : public Feature
 
 	void DrawBox(Unit* unit, int32_t color, bool drawName);
 	void DrawBox(Vector3 position, Vector2 edgeSize, int32_t color);
+
+
+	void RenderStyleRelic(Vector2& screenPos, std::string& unitName);
+	void RenderStyleDangerousAnimal(Vector2& screenPos, std::string& unitName);
+	void RenderStyleLighHuntable(Vector2& screenPos, std::string& unitName);
+	void RenderStyleHeavyFood(Vector2& screenPos, std::string& unitName);
+	void RenderStyleLightFood(Vector2& screenPos, std::string& unitName);
+	void RenderStyleFish(Vector2& screenPos, std::string& unitName);
 
 	void DrawCircle(Unit* unit, int radius, int32_t color, int smoothness , float thickness, bool drawName);
 };
