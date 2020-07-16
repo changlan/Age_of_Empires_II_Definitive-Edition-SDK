@@ -82,6 +82,7 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 
 Core::Core()
 {
+	printf("Core::Core()\n");
 	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();

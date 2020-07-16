@@ -64,6 +64,7 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 {
 	if (firstTime)
 	{
+		printf("5\n");
 		firstTime = false; //only once
 
 		//get device
@@ -200,13 +201,14 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 {
 	OnDllAttach(hModule);
 
+	printf("1\n");
 	HMODULE hDXGIDLL = 0;
 	do
 	{
 		hDXGIDLL = GetModuleHandleA("dxgi.dll");
 		Sleep(100);
 	} while (!hDXGIDLL);
-
+	printf("2\n");
 	IDXGISwapChain* pSwapChain;
 
 	WNDCLASSEXA wc = { sizeof(WNDCLASSEX), CS_CLASSDC, DXGIMsgProc, 0L, 0L, GetModuleHandleA(NULL), NULL, NULL, NULL, NULL, "DX", NULL };
@@ -268,7 +270,10 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 	phookD3D11Present = (D3D11PresentHook)(DWORD_PTR*)pSwapChainVtable[8];
 
 	VmtHook presentHook = VmtHook((void**)pSwapChainVtable);
+
+	printf("3\n");
 	presentHook.Hook(8, hookD3D11Present);
+	printf("4\n");
 
 	pDevice->Release();
 	pContext->Release();
