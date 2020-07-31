@@ -21,7 +21,7 @@ void RelicManager::OnMenuMainWindow()
 			{
 				continue;
 			}
-			if (strcmp(unit->pUnitData->name, "RELIC") == 0)
+			if (strcmp(unit->GetUnitData()->GetName(), "RELIC") == 0)
 			{
 				relics.push_back(unit);
 			}
@@ -36,7 +36,7 @@ void RelicManager::OnMenuMainWindow()
 		if (ImGui::Button("<"))
 		{
 			currentRelic = (currentRelic - 1) % relics.size();
-			Engine::Get()->GetLocalPlayer()->SetCameraPosition(relics[currentRelic]->position);
+			Engine::Get()->GetLocalPlayer()->SetCameraPosition(relics[currentRelic]->GetPosition());
 		}
 		ImGui::SameLine();
 		ImGui::Text("%d/%d", currentRelic + 1, relics.size());
@@ -44,7 +44,7 @@ void RelicManager::OnMenuMainWindow()
 		if (ImGui::Button(">"))
 		{
 			currentRelic = (currentRelic + 1) % relics.size();
-			Engine::Get()->GetLocalPlayer()->SetCameraPosition(relics[currentRelic]->position);
+			Engine::Get()->GetLocalPlayer()->SetCameraPosition(relics[currentRelic]->GetPosition());
 		}
 	}
 	ImGui::Separator();

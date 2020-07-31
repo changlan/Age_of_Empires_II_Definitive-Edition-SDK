@@ -102,7 +102,7 @@ void MinimapText::OnInitialise()
 {
 	hookEnabled = &enabled;
 
-	minimapHook.Hook((BYTE*)(int64_t)GetModuleHandle(NULL) + Offsets::minimapHookOffset, (BYTE*)minimapProxy, 14);
+	minimapHook.Hook((BYTE*)(int64_t)GetModuleHandle(NULL) + Offsets::minimapHookOffset, (BYTE*)minimapProxy, 20);
 }
 
 void MinimapText::OnShutdown()

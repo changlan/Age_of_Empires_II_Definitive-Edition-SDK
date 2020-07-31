@@ -287,11 +287,11 @@ DWORD __stdcall InitHooks(LPVOID hModule)
 	
 	presentHook.Unhook();
 
-	Sleep(1000);
+	Sleep(100);
 	
 	(WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)OriginalWndProcHandler);
 
-	Sleep(1000);
+	Sleep(100);
 
 	FreeLibraryAndExitThread((HMODULE)hModule, 0);
 }

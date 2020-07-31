@@ -18,9 +18,9 @@ void Debug::OnMenuMainWindow()
 	ImGui::Separator();
 	ImGui::Text("Debug");
 	//ImGui::Text("Idle: %d", idleUnit);
-	if (ImGui::Button("Flare"))
+	if (ImGui::Button("nothing"))
 	{
-		Engine::Get()->Flare(100.f, 100.f);
+
 	}
 	ImGui::Separator();
 }

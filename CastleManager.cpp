@@ -39,13 +39,13 @@ void CastleManager::OnUnitCreated(Unit* unit)
 	{
 		return;
 	}
-	Player* owningPlayer = unit->pOwner;
+	Player* owningPlayer = unit->GetOwner();
 	if (!owningPlayer || owningPlayer == Engine::Get()->GetLocalPlayer())
 	{
 		return;
 	}
 	
-	if (strcmp("CSTL", unit->pUnitData->name) == 0)
+	if (strcmp("CSTL", unit->GetUnitData()->GetName()) == 0)
 	{
 		std::string message = std::string(owningPlayer->name) + " is building a castle!";
 		const char* charMessage = message.c_str();

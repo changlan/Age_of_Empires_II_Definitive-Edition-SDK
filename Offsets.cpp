@@ -3,23 +3,23 @@
 namespace Offsets
 {
 	//48 8D 0D ? ? ? ? 41 B8 ? ? ? ? E8 ? ? ? ? 33 C0		//5
-	int64_t pathfindingSystem = 0x2bb6e10;
+	int64_t pathfindingSystem = 0x2BB80D0;
 
 	//48 8B 0D ? ? ? ? E8 ? ? ? ? C6 85						//5
-	int64_t mainScreen = 0x2ba4988;
+	int64_t mainScreen = 0x2BA5C48;
 
 	//48 8B 0D ? ? ? ? 48 85 C9 0F 84 ? ? ? ? 40			//4
-	int64_t tribePanelInven = 0x2ba5ed0;
+	int64_t tribePanelInven = 0x2BA7190;
 
 	//48 8B 83 ? ? ? ? 48 8B 48 70 F3 0F 10					//4
 	int64_t tribePanelInven_localPlayer = 0x208;
 
 	//4C 8B 05 ? ? ? ? 45 84
-	int64_t pAVGame = 0x2b96dd8;
+	int64_t pAVGame = 0x2B98098;
 
 	//TODO %s: %d/%d
 	//MinimapText 88 85 ? ? ? ? 41 8B 46 0C					//2
-	int64_t minimapHookOffset = 0xcb1646;
+	int64_t minimapHookOffset = 0xCB2616;
 
 	//Functions
 	int64_t printNotification = 0xca7b10;		//48 83 EC 48 48 8B 05 ? ? ? ? 4C 8D					//4

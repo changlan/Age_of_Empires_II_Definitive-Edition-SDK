@@ -82,20 +82,20 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 
 Core::Core()
 {
-	printf("Core::Core()\n");
-	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
+	//printf("Core::Core()\n");
+	//onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();
-	featureManager->RegisterFeature(new InitialiseOffsets());
+	//featureManager->RegisterFeature(new InitialiseOffsets());
 
 	//Register Features here
-	featureManager->RegisterFeature(new ResourceInformation());
+	//featureManager->RegisterFeature(new ResourceInformation());
 	featureManager->RegisterFeature(new ESP());
 	featureManager->RegisterFeature(new MinimapText());
-	featureManager->RegisterFeature(new RelicManager());
-	featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
+	//featureManager->RegisterFeature(new RelicManager());
+	//featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
 	//featureManager->RegisterFeature(new PauseManager());
-	featureManager->RegisterFeature(new CastleManager());
+	//featureManager->RegisterFeature(new CastleManager());
 
 #ifdef _DEBUG
 	featureManager->RegisterFeature(new Debug());
@@ -124,19 +124,20 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 				Unit* unit = player->pObjectManager->units[i];
 				if (!unit) { continue; }
 
-				if (unit->pOwner == player)
+				if (unit->GetOwner() == player)
 				{
 					ImGui::Text("%p", unit);
 					ImGui::SameLine();
-					ImGui::Text("%s", unit->pUnitData->name);
+					ImGui::Text("%s", unit->GetUnitData()->GetName());
+					ImGui::Text("%f %f %f", unit->GetPosition().x, unit->GetPosition().y, unit->GetPosition().z);
 					ImGui::SameLine();
-					std::string text = std::string("Copy##") + std::string(unit->pUnitData->name) + std::to_string(i);
+					//std::string text = std::string("Copy##") + std::string(unit->GetUnitData()->GetName()) + std::to_string(i);
 
-					if (ImGui::Button(text.c_str()))
+					if (ImGui::Button("Copy"))
 					{
 						Utility::CopyToClipboard((uint64_t)unit);
 					}
-					std::string vmtTree = std::string("VMT##") + std::string(unit->pUnitData->name) + "VMT";
+					/*std::string vmtTree = std::string("VMT##") + std::string(unit->pUnitData->name) + "VMT";
 					if (ImGui::TreeNode(vmtTree.c_str()))
 					{
 						for (int vmtIndex = 0; vmtIndex < 175; vmtIndex++)
@@ -150,9 +151,9 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 							}
 						}
 						ImGui::TreePop();
-					}
+					}*/
 
-					if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Building)
+					/*if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Building)
 					{
 						buildingCount++;
 					}
@@ -163,7 +164,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 					if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Cavalry)
 					{
 						calavaryCount++;
-					}
+					}*/
 				}
 			}
 			ImGui::Text("Buildings %.d", buildingCount);
@@ -182,7 +183,6 @@ void Core::OnPresent()
 {
 	__try
 	{
-		//printf("Valid: ");
 		MainScreen* mainScreen = Engine::Get()->GetMainScreen();
 		if (!mainScreen)
 		{
@@ -194,7 +194,7 @@ void Core::OnPresent()
 		{
 			return;
 		}
-		//printf(" world %p", world);
+		//printf("world %p", world);
 
 		PlayerArray* playerArray = world->pPlayerArray;
 		if (!playerArray)
@@ -216,7 +216,7 @@ void Core::OnPresent()
 			for (int i = 0; i < gaiaPlayer->pObjectManager->Count; i++)
 			{
 				Unit* unit = gaiaPlayer->pObjectManager->units[i];
-				if (!unit || unit->pUnitData->Class == -1)
+				if (!unit /*|| unit->GetUnitData()->Class == -1*/)
 				{
 					continue;
 				}
@@ -239,7 +239,7 @@ void Core::OnPresent()
 			for (int j = 0; j < player->pObjectManager->Count; j++)
 			{
 				Unit* unit = player->pObjectManager->units[j];
-				if (!unit || unit->pUnitData->Class == -1)
+				if (!unit /*|| unit->pUnitData->Class == -1*/)
 				{
 					continue;
 				}

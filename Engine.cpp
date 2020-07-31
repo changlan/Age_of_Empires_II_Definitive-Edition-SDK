@@ -92,7 +92,7 @@ Vector2 Engine::worldToScreen(Vector3 position) const
 
 Vector2 Engine::worldToScreen(Unit* unit) const
 {
-	return worldToScreen(unit->position);
+	return worldToScreen(unit->GetPosition());
 }
 
 uint32_t Engine::GetPlayerColor(int colorIndex) const
@@ -248,13 +248,4 @@ void Engine::PrintBottomNotification(const char* message, unsigned int hexcolor)
 	typedef void(__fastcall* tPrintBottomText) (GameScreen* AVGameScreen, const char* message, unsigned int hexcolor, int64_t unused);
 	static tPrintBottomText fPrintBottomText = (tPrintBottomText)(base + Offsets::printBottomText);
 	fPrintBottomText(GetMainScreen()->pGameScreen, message, hexcolor, 0xffffffffffffffff); //Color format: RBGA
-}
-
-int64_t Engine::Flare(float xPos, float yPos) const
-{
-	typedef __int64(__fastcall* tCreateFlare) (Player* player, __int64 hundert12, __int64 zero1, __int64 zero2, float xPos, float yPos, int64_t zero3, int64_t zero4);
-	static tCreateFlare fCreateFlare = (tCreateFlare)(base + 0xc31270);
-	
-	return fCreateFlare(GetLocalPlayer(), 0x112, 0, 0, 220.f, 220.f, 0, 0);
-	//__usercall fhsCreateFlare_MAYBE_7FF718CF1270@<rax>( __int64 a3_zero@<r8>, __int64 a4_zero@<r9>, float xPos@<xmm2>, float yPos@<xmm3>, __int64 a5_zero, int a6_Zero)
 }

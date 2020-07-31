@@ -281,52 +281,56 @@ public:
 class UnitData
 {
 public:
-	char pad_0x0000[0x20]; //0x0000
-	__int16 Class; //0x0020 
-	char pad_0x0022[0x26]; //0x0022
-	__int16 unk; //0x0048 
-	__int16 maxHp; //0x004A 
-	char pad_0x004C[0x8]; //0x004C
-	float collisionX; //0x0054 
-	float collisionY; //0x0058 
-	float collisionZ; //0x005C 
-	char pad_0x0060[0x120]; //0x0060
-	char* name; //0x0180 
-}; //Size=0x0408
+	char* GetName()
+	{
+		return *reinterpret_cast<char**>(*(uint64_t*)this + 0x848);
+	}
+
+	Vector3 GetCollision()
+	{
+		return *(Vector3*)(*(uint64_t*)this + 0x718);
+	}
+
+};
 
 
 class Unit
 {
+private:
+	float GetPosX()
+	{
+		int32_t position = *reinterpret_cast<int64_t*>((uint64_t)this + 0x1a0) ^ 0x187F64ADC21CDE88 ^ 0x4F019E376DDAD1E5;
+		return *(float*)(&position);
+	}
+
+	float GetPosY()
+	{
+		int32_t position = *reinterpret_cast<int64_t*>((uint64_t)this + 0x308) ^ 0x51E534524D81CFA6;
+		return *(float*)(&position);
+	}
+
+	float GetPosZ()
+	{
+		int32_t position = (*reinterpret_cast<int64_t*>((uint64_t)this + 0x3f8) - 0x17258AE0D9C58D92  ) ^ 0x78E0AFEAF822FC61;
+		return *(float*)(&position);
+	}
 public:
-	char pad_0x0000[0x10]; //0x0000
-	UnitData* pUnitData; //0x0010 
-	Player* pOwner; //0x0018 
-	char pad_0x0020[0x70]; //0x0020
-	float fHealth; //0x0090 
-	char pad_0x0094[0x4]; //0x0094
-	Vector3 position;
-
-	//When moving sadly height isnt set. When attack it works.
-	Vector3* GetTargetPosition()
+	
+	UnitData* GetUnitData()
 	{
-		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x288);
-		if (!actionList){return NULL;}
-		uint64_t targetDataWrapper = *reinterpret_cast<uint64_t*>(actionList + 0x10);
-		if (!targetDataWrapper) { return NULL; }
-		uint64_t actionMoveTo = *reinterpret_cast<uint64_t*>(targetDataWrapper);
-		if (!actionMoveTo) { return NULL; }
-		return reinterpret_cast<Vector3*>(actionMoveTo + 0x38);
+		return reinterpret_cast<UnitData*>((uint64_t)this + 0x10);
 	}
 
-
-	typedef char(__fastcall* fhsMoveToCaller)(Unit* unit, Unit* targetUnit, World* world, int64_t zero, float xPos, float yPos, int zero2);
-	void MoveTo(World* world, float xPos, float yPos)
+	Player* GetOwner()
 	{
-		static fhsMoveToCaller moveUnitCaller = (fhsMoveToCaller)((int64_t)GetModuleHandle(NULL) + 0xc863a0); //outdated and desync
-		moveUnitCaller(this, 0, world, 0, xPos, yPos, 0);
+		return *reinterpret_cast<Player**>((uint64_t)this + 0x18);
 	}
 
-}; //Size=0x0250
+	Vector3 GetPosition()
+	{
+		return Vector3(GetPosX(), GetPosY(), GetPosZ());
+	}
+};
 
 class ObjectManager
 {

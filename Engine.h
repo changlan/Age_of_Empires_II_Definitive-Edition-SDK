@@ -45,5 +45,4 @@ public:
 	void SendChat(const char* message, bool teamchat = false) const;
 	void PrintNotification(const char* message) const;
 	void PrintBottomNotification(const char* message, unsigned int hexcolor) const;
-	int64_t Flare(float xPos, float yPos) const;
 };

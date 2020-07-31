@@ -12,24 +12,24 @@ uint32_t ESP::colors_hex[8] = { 0xff0000ff, 0xffff0000,0xff00ff00,0xffffff00,0xf
 
 void ESP::DrawBox(Unit* unit, int32_t color, bool drawName = false)
 {
-	Vector3 one3 = unit->position;
-	one3.x -= unit->pUnitData->collisionX;
-	one3.y -= unit->pUnitData->collisionY;
+	Vector3 one3 = unit->GetPosition();
+	one3.x -= unit->GetUnitData()->GetCollision().x;
+	one3.y -= unit->GetUnitData()->GetCollision().y;
 	Vector2 one = Engine::Get()->worldToScreen(one3);
 
-	Vector3 two3 = unit->position;
-	two3.x += unit->pUnitData->collisionX;
-	two3.y += unit->pUnitData->collisionY;
+	Vector3 two3 = unit->GetPosition();
+	two3.x += unit->GetUnitData()->GetCollision().x;
+	two3.y += unit->GetUnitData()->GetCollision().y;
 	Vector2 two = Engine::Get()->worldToScreen(two3);
 
-	Vector3 three3 = unit->position;
-	three3.x -= unit->pUnitData->collisionX;
-	three3.y += unit->pUnitData->collisionY;
+	Vector3 three3 = unit->GetPosition();
+	three3.x -= unit->GetUnitData()->GetCollision().x;
+	three3.y += unit->GetUnitData()->GetCollision().y;
 	Vector2 three = Engine::Get()->worldToScreen(three3);
 
-	Vector3 four3 = unit->position;
-	four3.x += unit->pUnitData->collisionX;
-	four3.y -= unit->pUnitData->collisionY;
+	Vector3 four3 = unit->GetPosition();
+	four3.x += unit->GetUnitData()->GetCollision().x;
+	four3.y -= unit->GetUnitData()->GetCollision().y;
 	Vector2 four = Engine::Get()->worldToScreen(four3);
 
 	ImVec2 ivOne = ImVec2(one.x, one.y);
@@ -42,10 +42,10 @@ void ESP::DrawBox(Unit* unit, int32_t color, bool drawName = false)
 
 	if (drawName)
 	{
-		Vector3 textPos = unit->position;
+		Vector3 textPos = unit->GetPosition();
 		Vector2 screenTextPos = Engine::Get()->worldToScreen(textPos);
 		ImVec2 ivTextPos = ImVec2(screenTextPos.x, screenTextPos.y);
-		Renderer::Get()->RenderText(unit->pUnitData->name, ivTextPos, 16, color, false);
+		Renderer::Get()->RenderText(std::string(unit->GetUnitData()->GetName()), ivTextPos, 16, color, false);
 	}
 }
 
@@ -84,7 +84,7 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 {
 	static const float PI = 3.14159265358979323846f;
 	int32_t tileSize = Engine::Get()->GetWorld()->pMap->GetTileSize();
-	Vector3 center = unit->position;
+	Vector3 center = unit->GetPosition();
 
 	std::vector<ImVec2> screeenPoints;
 
@@ -106,7 +106,7 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 	{
 		Vector2 screenTextPos = Engine::Get()->worldToScreen(center);
 		ImVec2 ivTextPos = ImVec2(screenTextPos.x, screenTextPos.y);
-		Renderer::Get()->RenderText(unit->pUnitData->name, ivTextPos, 16, color, false);
+		Renderer::Get()->RenderText(unit->GetUnitData()->GetName(), ivTextPos, 16, color, false);
 	}
 }
 
@@ -135,12 +135,12 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 {
 	if (playerUnitEsp[playerIndex])
 	{
-		if (strcmp(unit->pUnitData->name, "FLARE") == 0)
+		if (strcmp(unit->GetUnitData()->GetName(), "FLARE") == 0)
 		{
 			return; //Dont display annoying flares that Bots use
 		}
 
-		if (siegeImpactLocation)
+		/*if (siegeImpactLocation)
 		{
 			if (std::string(unit->pUnitData->name).find("Projectile Scorpion") != std::string::npos)
 			{
@@ -171,14 +171,15 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 					Renderer::Get()->RenderCircleFilled(ImVec2(screenDestinationPos.x, screenDestinationPos.y), 30, colors_hex[*player->pColor] & 0x77ffffff);
 				}
 			}
-		}
+		}*/
 
-		if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Miscellaneous)
+		/*if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Miscellaneous)
 		{
 			return;
 		}
 
-		if (strcmp(unit->pUnitData->name, "CSTL") == 0)
+		*/
+		if (strcmp(unit->GetUnitData()->GetName(), "CSTL") == 0)
 		{
 			DrawBox(unit, colors_hex[*player->pColor], true);
 			return;
@@ -186,12 +187,12 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 
 		DrawBox(unit, colors_hex[*player->pColor], playerUnitNameEsp[playerIndex]);
 
-		if (trebuchetESP && (std::string(unit->pUnitData->name).find("TREBU") != std::string::npos || std::string(unit->pUnitData->name).find("PTREB") != std::string::npos))
+		if (trebuchetESP && (std::string(unit->GetUnitData()->GetName()).find("TREBU") != std::string::npos || std::string(unit->GetUnitData()->GetName()).find("PTREB") != std::string::npos))
 		{
 			DrawCircle(unit, 16, colors_hex[*player->pColor], 100, 2, true);
 		}
 
-		if (playerUnitDestinationEsp[playerIndex])
+		/*if (playerUnitDestinationEsp[playerIndex])
 		{
 			Vector3* targetPosition = unit->GetTargetPosition();
 			if (!targetPosition || targetPosition->x <= 0 || targetPosition->y <= 0) { return; }
@@ -199,7 +200,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			Vector2 screenPos = Engine::Get()->worldToScreen(unit);
 			Vector2 screenTargetPos = Engine::Get()->worldToScreen(*targetPosition);
 			Renderer::Get()->RenderLine(ImVec2(screenPos.x, screenPos.y), ImVec2(screenTargetPos.x, screenTargetPos.y), colors_hex[*player->pColor]);
-		}
+		}*/
 	}
 }
 
@@ -219,7 +220,7 @@ void ESP::OnNeutralUnit(Unit* unit)
 {
 	if (gaiaESP || goldESP || stoneESP)
 	{
-		std::string unitName = unit->pUnitData->name;
+		std::string unitName = unit->GetUnitData()->GetName();
 		Vector2 screenPos = Engine::Get()->worldToScreen(unit);
 
 		if (goldESP && strcmp(unitName.c_str(), "GOLDM") == 0)
@@ -290,7 +291,7 @@ void ESP::OnMenuMainWindow()
 {
 	ImGui::Separator();
 	ImGui::Text("Siege ESP");
-	ImGui::Checkbox("Siege Impact", &siegeImpactLocation);
+	//ImGui::Checkbox("Siege Impact", &siegeImpactLocation);
 	ImGui::Checkbox("Trebuchet range", &trebuchetESP);
 	ImGui::Separator();
 	ImGui::Text("Resource ESP");
