@@ -101,7 +101,7 @@ void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16,
 	{
 		Renderer::Get()->RenderLine(screeenPoints[i], screeenPoints[i - 1], color, thickness);
 	}
-	Renderer::Get()->RenderLine(screeenPoints[0], screeenPoints[screeenPoints.size()-1], color, thickness);
+	Renderer::Get()->RenderLine(screeenPoints[0], screeenPoints[screeenPoints.size() - 1], color, thickness);
 	if (drawName)
 	{
 		Vector2 screenTextPos = Engine::Get()->worldToScreen(center);
@@ -117,7 +117,7 @@ void ESP::LoadConfig()
 	trebuchetESP = config->ReadInt("ESP", "trebuchetESP");
 	gaiaESP = config->ReadInt("ESP", "gaiaESP");
 	goldESP = config->ReadInt("ESP", "goldESP");
-	stoneESP = config->ReadInt("ESP", "stoneESP");	
+	stoneESP = config->ReadInt("ESP", "stoneESP");
 }
 
 void ESP::SaveConfig()
@@ -140,9 +140,9 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			return; //Dont display annoying flares that Bots use
 		}
 
-		/*if (siegeImpactLocation)
+		if (siegeImpactLocation)
 		{
-			if (std::string(unit->pUnitData->name).find("Projectile Scorpion") != std::string::npos)
+			if (std::string(unit->GetUnitData()->GetName()).find("Projectile Scorpion") != std::string::npos)
 			{
 				Vector3* destination = unit->GetTargetPosition();
 				if (destination)
@@ -152,7 +152,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 				}
 			}
 
-			if (std::string(unit->pUnitData->name).find("Projectile Mangonel") != std::string::npos)
+			if (std::string(unit->GetUnitData()->GetName()).find("Projectile Mangonel") != std::string::npos)
 			{
 				Vector3* destination = unit->GetTargetPosition();
 				if (destination)
@@ -162,7 +162,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 				}
 			}
 
-			if (std::string(unit->pUnitData->name).find("Projectile Trebuchet") != std::string::npos)
+			if (std::string(unit->GetUnitData()->GetName()).find("Projectile Trebuchet") != std::string::npos)
 			{
 				Vector3* destination = unit->GetTargetPosition();
 				if (destination)
@@ -171,13 +171,12 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 					Renderer::Get()->RenderCircleFilled(ImVec2(screenDestinationPos.x, screenDestinationPos.y), 30, colors_hex[*player->pColor] & 0x77ffffff);
 				}
 			}
-		}*/
+		}
 
 		/*if (unit->pUnitData->Class == (int16_t)EnumUnitDataClass::Miscellaneous)
 		{
 			return;
 		}
-
 		*/
 		if (strcmp(unit->GetUnitData()->GetName(), "CSTL") == 0)
 		{
@@ -192,7 +191,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			DrawCircle(unit, 16, colors_hex[*player->pColor], 100, 2, true);
 		}
 
-		/*if (playerUnitDestinationEsp[playerIndex])
+		if (playerUnitDestinationEsp[playerIndex])
 		{
 			Vector3* targetPosition = unit->GetTargetPosition();
 			if (!targetPosition || targetPosition->x <= 0 || targetPosition->y <= 0) { return; }
@@ -200,7 +199,7 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 			Vector2 screenPos = Engine::Get()->worldToScreen(unit);
 			Vector2 screenTargetPos = Engine::Get()->worldToScreen(*targetPosition);
 			Renderer::Get()->RenderLine(ImVec2(screenPos.x, screenPos.y), ImVec2(screenTargetPos.x, screenTargetPos.y), colors_hex[*player->pColor]);
-		}*/
+		}
 	}
 }
 
@@ -278,7 +277,7 @@ void ESP::OnNeutralUnit(Unit* unit)
 			Renderer::Get()->RenderText(unitName, ImVec2(screenPos.x, screenPos.y), 16, 0xffffffff);
 			return;
 		}
-		
+
 		if (strcmp(unitName.c_str(), "RELIC") == 0)
 		{
 			Renderer::Get()->RenderCircleFilled(ImVec2(screenPos.x, screenPos.y), 50, 0x40ffffff);

@@ -329,6 +329,18 @@ public:
 	{
 		return Vector3(GetPosX(), GetPosY(), GetPosZ());
 	}
+
+	Vector3* GetTargetPosition()
+	{
+		uint64_t actionList = *reinterpret_cast<uint64_t*>((uint64_t)this + 0x648);
+		if (!actionList) { return NULL; }
+		uint64_t targetDataWrapper = *reinterpret_cast<uint64_t*>(actionList + 0x10);
+		if (!targetDataWrapper) { return NULL; }
+		uint64_t actionMoveTo = *reinterpret_cast<uint64_t*>(targetDataWrapper);
+		if (!actionMoveTo) { return NULL; }
+		return reinterpret_cast<Vector3*>(actionMoveTo + 0x38);
+	}
+
 };
 
 class ObjectManager
