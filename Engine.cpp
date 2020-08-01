@@ -72,7 +72,7 @@ PlayerArray* Engine::GetPlayerArray() const
 Vector2 Engine::worldToScreen(Vector3 position) const
 {
 	MainScreen* mainScreen = GetMainScreen();
-	static int tileSize = GetWorld()->pMap->GetTileSize();
+	int tileSize = GetWorld()->pMap->GetTileSize();
 	float tile_width = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
 	float tile_height = tileSize * mainScreen->pGameScreen->pMainView->ScreenPosZ;
 	
@@ -213,8 +213,8 @@ Player* Engine::GetLocalPlayer() const
 void Engine::SendChat(const char* message, bool teamchat) const
 {
 	typedef void(__fastcall* tSendChat) (int64_t game, const char* text);
-	static tSendChat fSendChat = (tSendChat)(base + Offsets::sendChat);
-	static int64_t game = *(int64_t*)(base + Offsets::pAVGame);
+	tSendChat fSendChat = (tSendChat)(base + Offsets::sendChat);
+	int64_t game = *(int64_t*)(base + Offsets::pAVGame);
 
 	if (teamchat)
 	{
@@ -230,13 +230,13 @@ void Engine::SendChat(const char* message, bool teamchat) const
 void Engine::PrintNotification(const char* message) const
 {
 	typedef void(__fastcall* tPrintNotification) (GameScreen* AVGameScreen, const char* message, int unknown);
-	static tPrintNotification fPrintNotification = (tPrintNotification)(base + Offsets::printNotification);
+	tPrintNotification fPrintNotification = (tPrintNotification)(base + Offsets::printNotification);
 	fPrintNotification(GetMainScreen()->pGameScreen, message, 0);
 }
 
 void Engine::PrintBottomNotification(const char* message, unsigned int hexcolor) const
 {
 	typedef void(__fastcall* tPrintBottomText) (GameScreen* AVGameScreen, const char* message, unsigned int hexcolor, int64_t unused);
-	static tPrintBottomText fPrintBottomText = (tPrintBottomText)(base + Offsets::printBottomText);
+	tPrintBottomText fPrintBottomText = (tPrintBottomText)(base + Offsets::printBottomText);
 	fPrintBottomText(GetMainScreen()->pGameScreen, message, hexcolor, 0xffffffffffffffff); //Color format: RBGA
 }

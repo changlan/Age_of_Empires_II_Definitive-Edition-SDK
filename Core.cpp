@@ -31,6 +31,9 @@ MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();
 MidfunctionHook onCreateUnitHook = MidfunctionHook();
 
+
+bool openOverlay = true;
+
 void __fastcall  OnGameStartHook(Registers* registers)
 {
 	FeatureManager::Get()->OnGameStart();
@@ -176,7 +179,6 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 	ImGui::PopStyleColor();
 }
 
-
 void Core::OnPresent()
 {
 	__try
@@ -202,7 +204,6 @@ void Core::OnPresent()
 		//printf(" playerArray %p", playerArray);
 		int64_t totalPlayers = Engine::Get()->GetTotalPlayers();
 
-		static bool openOverlay = true;
 		if (GetAsyncKeyState(VK_INSERT) & 1) { openOverlay = !openOverlay; }
 
 		Renderer::Get()->BeginScene();

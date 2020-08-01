@@ -82,7 +82,7 @@ void ESP::DrawBox(Vector3 position, Vector2 edgeSize, int32_t color)
 
 void ESP::DrawCircle(Unit* unit, int radius, int32_t color, int smoothness = 16, float thickness = 1.f, bool drawName = false)
 {
-	static const float PI = 3.14159265358979323846f;
+	const float PI = 3.14159265358979323846f;
 	int32_t tileSize = Engine::Get()->GetWorld()->pMap->GetTileSize();
 	Vector3 center = unit->GetPosition();
 

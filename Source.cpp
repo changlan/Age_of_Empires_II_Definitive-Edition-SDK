@@ -24,6 +24,8 @@ ID3D11DeviceContext* pContext = nullptr;
 
 DWORD_PTR* pSwapChainVtable = nullptr;
 
+Core* core = nullptr;
+
 
 #include "main.h" //helper funcs
 
@@ -184,7 +186,10 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 	ImGui_ImplDX11_NewFrame();
 	ImGui::NewFrame();
 
-	static Core* core = new Core();
+	if (!core)
+	{
+		core = new Core();
+	}
 	core->OnPresent();
 
 	ImGui::EndFrame();

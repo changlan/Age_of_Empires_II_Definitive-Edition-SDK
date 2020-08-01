@@ -220,8 +220,7 @@ class Map
 public:
 	int32_t GetTileSize()
 	{
-		static int32_t tileOffset = 0x5B38;
-		return *reinterpret_cast<int32_t*>((int64_t)this + tileOffset);
+		return *reinterpret_cast<int32_t*>((int64_t)this + 0x5B38);
 	}
 
 }; //Size=0x5CC8
