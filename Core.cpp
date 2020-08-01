@@ -82,20 +82,18 @@ void __fastcall  OnCreateUnitHook(Registers* registers)
 
 Core::Core()
 {
-	//printf("Core::Core()\n");
-	//onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
+	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();
 	//featureManager->RegisterFeature(new InitialiseOffsets());
 
 	//Register Features here
-	//featureManager->RegisterFeature(new ResourceInformation());
+	featureManager->RegisterFeature(new ResourceInformation());
 	featureManager->RegisterFeature(new ESP());
 	featureManager->RegisterFeature(new MinimapText());
-	//featureManager->RegisterFeature(new RelicManager());
-	//featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
-	//featureManager->RegisterFeature(new PauseManager());
-	//featureManager->RegisterFeature(new CastleManager());
+	featureManager->RegisterFeature(new RelicManager());
+	featureManager->RegisterFeature(new CustomLoadingScreen("C:\\wallpaper.jpg"));
+	featureManager->RegisterFeature(new CastleManager());
 
 #ifdef _DEBUG
 	featureManager->RegisterFeature(new Debug());

@@ -18,7 +18,6 @@ namespace Offsets
 	//Functions
 	extern int64_t printNotification;
 	extern int64_t printBottomText;
-	extern int64_t pauseGame;
 	extern int64_t sendChat;
 	extern int64_t createUnitHook;
 

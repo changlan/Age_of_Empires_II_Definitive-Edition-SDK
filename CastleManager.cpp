@@ -11,6 +11,7 @@
 bool warningEnabled = true;
 int notification = 0;
 
+ThreadSafeQueue<std::string> localMessages;
 ThreadSafeQueue<std::string> teamMessages;
 ThreadSafeQueue<std::string> allMessages;
 
@@ -40,7 +41,7 @@ void CastleManager::OnUnitCreated(Unit* unit)
 		return;
 	}
 	Player* owningPlayer = unit->GetOwner();
-	if (!owningPlayer || owningPlayer == Engine::Get()->GetLocalPlayer())
+	if (!owningPlayer /*|| owningPlayer == Engine::Get()->GetLocalPlayer()*/)
 	{
 		return;
 	}
@@ -53,7 +54,7 @@ void CastleManager::OnUnitCreated(Unit* unit)
 		switch (notification)
 		{
 		case 0:
-			Engine::Get()->PrintNotification(charMessage);
+			localMessages.push(message);
 			break;
 		case 1:
 			teamMessages.push(message);
@@ -69,6 +70,13 @@ void CastleManager::OnUnitCreated(Unit* unit)
 
 void CastleManager::OnMenuMainWindow()
 {
+	if (!localMessages.isEmpty())
+	{
+		std::string message;
+		localMessages.pop(message);
+		Engine::Get()->PrintNotification(message.c_str());
+	}
+
 	if (!teamMessages.isEmpty())
 	{
 		std::string message;

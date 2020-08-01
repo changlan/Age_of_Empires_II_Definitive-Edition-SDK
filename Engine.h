@@ -41,7 +41,6 @@ public:
 	Player* GetPlayerByName(char* playername) const;
 	Player* GetLocalPlayer() const;
 
-	void PauseGame() const;
 	void SendChat(const char* message, bool teamchat = false) const;
 	void PrintNotification(const char* message) const;
 	void PrintBottomNotification(const char* message, unsigned int hexcolor) const;

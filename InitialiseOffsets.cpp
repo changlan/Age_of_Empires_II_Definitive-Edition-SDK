@@ -57,11 +57,7 @@ void InitialiseOffsets::OnInitialise()
 	printBottomText = Pattern::FindSignature("AoE2DE_s.exe", "48 8B C4 48 83 EC 78 F3 0F 10 05 ? ? ? ? 41");
 	printBottomText -= base;
 	printf("printBottomText: %x\n", printBottomText);
-	
-	pauseGame = Pattern::FindSignature("AoE2DE_s.exe", "48 89 5C 24 ? 55 48 8D 6C 24 ? 48 81 EC ? ? ? ? 80");
-	pauseGame -= base;
-	printf("pauseGame: %x\n", pauseGame);
-	
+		
 	sendChat = Pattern::FindSignature("AoE2DE_s.exe", "E8 ? ? ? ? 90 48 8B 05 ? ? ? ? F2") - 0x94;
 	sendChat -= base;
 	printf("sendChat: %x\n", sendChat);

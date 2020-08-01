@@ -209,15 +209,6 @@ Player* Engine::GetLocalPlayer() const
 }
 
 //
-//Pauses the game
-void Engine::PauseGame() const
-{
-	typedef int64_t(__fastcall* tPauseGame)(CommHandler* CommHandler);
-	static tPauseGame fPauseGame = (tPauseGame)(base + Offsets::pauseGame);
-	fPauseGame(Get()->GetGame()->pCommHandler);
-}
-
-//
 //Sends a chat message. Only to be called from rendering thread
 void Engine::SendChat(const char* message, bool teamchat) const
 {
@@ -240,7 +231,7 @@ void Engine::PrintNotification(const char* message) const
 {
 	typedef void(__fastcall* tPrintNotification) (GameScreen* AVGameScreen, const char* message, int unknown);
 	static tPrintNotification fPrintNotification = (tPrintNotification)(base + Offsets::printNotification);
-	fPrintNotification(GetMainScreen()->pGameScreen, message, 1);
+	fPrintNotification(GetMainScreen()->pGameScreen, message, 0);
 }
 
 void Engine::PrintBottomNotification(const char* message, unsigned int hexcolor) const
