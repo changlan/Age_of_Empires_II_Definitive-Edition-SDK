@@ -1,6 +1,7 @@
 #pragma once
 // Generated using ReClass 2016
 #include <cstdint>
+#include "Engine.h"
 
 struct Vector4
 {
@@ -189,6 +190,29 @@ public:
 	{
 		xScreenPos = pos.x;
 		yScreenPos = pos.y;
+	}
+
+	bool IsAllied(Player* other)
+	{
+		int32_t playerNumber = Engine::Get()->GetPlayerNumber(other);
+		int32_t* diplomacy = (int32_t*)((int64_t)this + 0xd0);
+		return *(diplomacy + playerNumber) == 2;
+	}
+
+	bool IsEnemy(Player* other)
+	{
+		int32_t playerNumber = Engine::Get()->GetPlayerNumber(other);
+		int32_t* diplomacy = (int32_t*)((int64_t)this + 0xd0);
+		return *(diplomacy + playerNumber) == 4;
+	}
+
+	bool IsNeutral(Player* other)
+	{
+		int32_t playerNumber = Engine::Get()->GetPlayerNumber(other);
+		int32_t* diplomacy = (int32_t*)((int64_t)this + 0xd0);
+
+		//TODO is 0 correct?
+		return *(diplomacy + playerNumber) == 1;
 	}
 
 }; //Size=0x93A0

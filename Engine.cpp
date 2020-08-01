@@ -162,6 +162,31 @@ Player* Engine::GetPlayer(int index) const
 	return playerArray->playerData[index].player;
 }
 
+//TODO is this stable?
+int Engine::GetPlayerNumber(Player* player)
+{
+	const int64_t totalPlayers = GetTotalPlayers();
+	
+
+	MainScreen* mainScreen = GetMainScreen();
+
+	World* main = GetWorld();
+
+	PlayerArray* playerArray = main->pPlayerArray;
+	
+
+	for (int i = 0; i <= totalPlayers; i++)
+	{
+		if (playerArray->playerData[i].player == player)
+		{
+			return i;
+		}
+	}
+
+	printf("Failed to GetPlayerNumber()\n");
+	return -1;
+}
+
 Player* Engine::GetPlayerByName(char* playerName) const
 {
 	MainScreen* mainScreen = GetMainScreen();

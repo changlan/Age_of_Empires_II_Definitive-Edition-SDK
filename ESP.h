@@ -12,6 +12,9 @@ class ESP : public Feature
 	bool stoneESP = true;
 	bool trebuchetESP = true;
 	bool siegeImpactLocation = true;
+	bool allyEsp = false;
+	bool neutralEsp = true;
+	bool enemyEsp = true;
 
 	bool playerUnitEsp[9] = { true,true,true,true,true,true,true,true, true };
 	bool playerUnitDestinationEsp[9] = { false,false,false,false,false,false,false,false, false };

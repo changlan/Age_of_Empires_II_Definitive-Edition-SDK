@@ -38,6 +38,7 @@ public:
 	uint32_t GetPlayerColor(int colorIndex) const;
 	ImVec4 GetPlayerColorImGUI(int colorIndex) const;
 	Player* GetPlayer(int index) const;
+	int GetPlayerNumber(Player* player);
 	Player* GetPlayerByName(char* playername) const;
 	Player* GetLocalPlayer() const;
 

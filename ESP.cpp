@@ -135,6 +135,20 @@ void ESP::OnUnitIteration(Unit* unit, Player* player, int playerIndex)
 {
 	if (playerUnitEsp[playerIndex])
 	{
+		if (!allyEsp && Engine::Get()->GetLocalPlayer()->IsAllied(player))
+		{
+			return;
+		}
+
+		if (!neutralEsp && Engine::Get()->GetLocalPlayer()->IsNeutral(player))
+		{
+			return;
+		}
+
+		if (!enemyEsp && Engine::Get()->GetLocalPlayer()->IsEnemy(player))
+		{
+			return;
+		}
 		if (strcmp(unit->GetUnitData()->GetName(), "FLARE") == 0)
 		{
 			return; //Dont display annoying flares that Bots use
@@ -289,6 +303,13 @@ void ESP::OnNeutralUnit(Unit* unit)
 void ESP::OnMenuMainWindow()
 {
 	ImGui::Separator();
+	ImGui::Text("Diplomacy ESP");
+	ImGui::Checkbox("Ally", &allyEsp);
+	ImGui::SameLine();
+	ImGui::Checkbox("Neutral", &neutralEsp);
+	ImGui::SameLine();
+	ImGui::Checkbox("Enemy", &enemyEsp);
+
 	ImGui::Text("Siege ESP");
 	//ImGui::Checkbox("Siege Impact", &siegeImpactLocation);
 	ImGui::Checkbox("Trebuchet range", &trebuchetESP);
