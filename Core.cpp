@@ -27,18 +27,12 @@
 
 #include "Offsets.h"
 
-MidfunctionHook onGameStartHook = MidfunctionHook();
 MidfunctionHook onTurnHook = MidfunctionHook();
 MidfunctionHook onCreateUnitHook = MidfunctionHook();
 
 
 bool openOverlay = true;
 
-void __fastcall  OnGameStartHook(Registers* registers)
-{
-	FeatureManager::Get()->OnGameStart();
-	printf("OnGameStart()\n");
-}
 
 
 void __fastcall  OnTurnHook(Registers* registers)
@@ -130,7 +124,7 @@ void createPlayerTreeNode(Player* player, int playerIndex)
 					ImGui::Text("%p", unit);
 					ImGui::SameLine();
 					ImGui::Text("%s", unit->GetUnitData()->GetName());
-					ImGui::Text("%f %f %f", unit->GetPosition().x, unit->GetPosition().y, unit->GetPosition().z);
+					ImGui::Text("%f %f %f Health: %f", unit->GetPosition().x, unit->GetPosition().y, unit->GetPosition().z, unit->GetHealth());
 					ImGui::SameLine();
 					//std::string text = std::string("Copy##") + std::string(unit->GetUnitData()->GetName()) + std::to_string(i);
 

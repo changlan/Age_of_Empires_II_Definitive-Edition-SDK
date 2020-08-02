@@ -337,6 +337,7 @@ private:
 		int32_t position = (*reinterpret_cast<int64_t*>((uint64_t)this + 0x3f8) - 0x17258AE0D9C58D92  ) ^ 0x78E0AFEAF822FC61;
 		return *(float*)(&position);
 	}
+
 public:
 	
 	UnitData* GetUnitData()
@@ -352,6 +353,12 @@ public:
 	Vector3 GetPosition()
 	{
 		return Vector3(GetPosX(), GetPosY(), GetPosZ());
+	}
+
+	float GetHealth()
+	{
+		int32_t position = (*reinterpret_cast<int64_t*>((uint64_t)this + 0x100) + 0x16F41E044E9AB282 - 0x3E3A7DDCA209C1DB);
+		return *(float*)(&position);
 	}
 
 	Vector3* GetTargetPosition()
