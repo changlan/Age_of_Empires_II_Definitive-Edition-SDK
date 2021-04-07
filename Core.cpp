@@ -82,7 +82,7 @@ Core::Core()
 	onCreateUnitHook.Hook((BYTE*)GetModuleHandle(NULL) + Offsets::createUnitHook, (BYTE*)OnCreateUnitHook, 15);
 	
 	FeatureManager* featureManager = FeatureManager::Get();
-	//featureManager->RegisterFeature(new InitialiseOffsets());
+	featureManager->RegisterFeature(new InitialiseOffsets());
 
 	//Register Features here
 	featureManager->RegisterFeature(new ResourceInformation());
@@ -182,20 +182,20 @@ void Core::OnPresent()
 		{
 			return;
 		}
-		//printf("mainScreen %p", mainScreen);
+		//printf("mainScreen %p\n", mainScreen);
 		World* world = Engine::Get()->GetWorld();
 		if (!world)
 		{
 			return;
 		}
-		//printf("world %p", world);
+		//printf("world %p\n", world);
 
 		PlayerArray* playerArray = world->pPlayerArray;
 		if (!playerArray)
 		{
 			return;
 		}
-		//printf(" playerArray %p", playerArray);
+		printf(" playerArray %p\n", playerArray);
 		int64_t totalPlayers = Engine::Get()->GetTotalPlayers();
 
 		if (GetAsyncKeyState(VK_INSERT) & 1) { openOverlay = !openOverlay; }
