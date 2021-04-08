@@ -2,79 +2,73 @@
 
 #include <Windows.h>
 
-//Thanks to Rake for his scanning code
-class Utility
-{
-public:
-    static char* ScanBasic(char* pattern, char* mask, char* begin, uintptr_t size)
-    {
-        uintptr_t patternLen = strlen(mask);
+// Thanks to Rake for his scanning code
+class Utility {
+ public:
+  static char* ScanBasic(char* pattern, char* mask, char* begin,
+                         uintptr_t size) {
+    uintptr_t patternLen = strlen(mask);
 
-        //for (int i = 0; i < size - patternLen; i++)
-        for (int i = 0; i < size; i++)
-        {
-            bool found = true;
-            for (int j = 0; j < patternLen; j++)
-            {
-                if (mask[j] != '?' && pattern[j] != *(char*)((uintptr_t)begin + i + j))
-                {
-                    found = false;
-                    break;
-                }
-            }
-            if (found)
-            {
-                return (begin + i);
-            }
+    // for (int i = 0; i < size - patternLen; i++)
+    for (int i = 0; i < size; i++) {
+      bool found = true;
+      for (int j = 0; j < patternLen; j++) {
+        if (mask[j] != '?' &&
+            pattern[j] != *(char*)((uintptr_t)begin + i + j)) {
+          found = false;
+          break;
         }
-        return nullptr;
+      }
+      if (found) {
+        return (begin + i);
+      }
     }
+    return nullptr;
+  }
 
-    static char* Scan(char* pattern, char* mask, char* begin, uintptr_t size)
-    {
-        char* match{ nullptr };
-        DWORD oldprotect = 0;
-        MEMORY_BASIC_INFORMATION mbi{};
+  static char* Scan(char* pattern, char* mask, char* begin, uintptr_t size) {
+    char* match{nullptr};
+    DWORD oldprotect = 0;
+    MEMORY_BASIC_INFORMATION mbi{};
 
-        for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize)
-        {
-            if (!VirtualQuery(curr, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT || mbi.Protect == PAGE_NOACCESS) continue;
+    for (char* curr = begin; curr < begin + size; curr += mbi.RegionSize) {
+      if (!VirtualQuery(curr, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT ||
+          mbi.Protect == PAGE_NOACCESS)
+        continue;
 
-            if (VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_EXECUTE_READWRITE, &oldprotect))
-            {
-                match = ScanBasic(pattern, mask, curr, mbi.RegionSize);
+      if (VirtualProtect(mbi.BaseAddress, mbi.RegionSize,
+                         PAGE_EXECUTE_READWRITE, &oldprotect)) {
+        match = ScanBasic(pattern, mask, curr, mbi.RegionSize);
 
-                VirtualProtect(mbi.BaseAddress, mbi.RegionSize, oldprotect, &oldprotect);
+        VirtualProtect(mbi.BaseAddress, mbi.RegionSize, oldprotect,
+                       &oldprotect);
 
-                if (match != nullptr)
-                {
-                    break;
-                }
-            }
+        if (match != nullptr) {
+          break;
         }
-        return match;
+      }
     }
+    return match;
+  }
 
-    static char* ScanProc(char* pattern, char* mask)
-    {
-        unsigned long long int kernelMemory = (sizeof(char*) == 4) ? 0x80000000 : 0x800000000000;
+  static char* ScanProc(char* pattern, char* mask) {
+    unsigned long long int kernelMemory =
+        (sizeof(char*) == 4) ? 0x80000000 : 0x800000000000;
 
-        return Scan(pattern, mask, 0x0, (uintptr_t)kernelMemory);
-    }
+    return Scan(pattern, mask, 0x0, (uintptr_t)kernelMemory);
+  }
 
-    static void CopyToClipboard(uint64_t addy)
-    {
-        char szBuffer[2048];
-        sprintf_s(szBuffer, "0x%llx", addy);
-        const char* output = szBuffer;
-        const size_t len = strlen(output) + 1;
-        HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
-        memcpy(GlobalLock(hMem), output, len);
-        GlobalUnlock(hMem);
-        OpenClipboard(0);
-        EmptyClipboard();
-        SetClipboardData(CF_TEXT, hMem);
-        CloseClipboard();
-    }
-
+  static void CopyToClipboard(uint64_t addy) {
+    char szBuffer[2048];
+    sprintf_s(szBuffer, "0x%llx", addy);
+    const char* output = szBuffer;
+    const size_t len = strlen(output) + 1;
+    HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+    memcpy(GlobalLock(hMem), output, len);
+    GlobalUnlock(hMem);
+    OpenClipboard(0);
+    EmptyClipboard();
+    SetClipboardData(CF_TEXT, hMem);
+    CloseClipboard();
+  }
 };

@@ -7,11 +7,11 @@
  */
 
 class Unit;
-class Core
-{
-    bool skipLocalplayer = false;
-public:
-    Core();
-    void OnPresent();
-    void OnShutdown();
+class Core {
+  bool skipLocalplayer = false;
+
+ public:
+  Core();
+  void OnPresent();
+  void OnShutdown();
 };

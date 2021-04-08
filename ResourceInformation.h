@@ -1,9 +1,7 @@
 #pragma once
 #include "Feature.h"
 
-
-class ResourceInformation : public Feature
-{
-	//Callbacks
-	void OnMenuPlayerTreenode(Player* player, int playerIndex) override;
+class ResourceInformation : public Feature {
+  // Callbacks
+  void OnMenuPlayerTreenode(Player* player, int playerIndex) override;
 };
